@@ -41,7 +41,7 @@ public class MongoConnect {
         UserLevels.insertOne(doc);
     }
 
-    public MongoCollection<Document> getUserStats() {
+    public static MongoCollection<Document> getUserStats() {
         return UserStats;
     }
 
@@ -49,11 +49,11 @@ public class MongoConnect {
         UserStats = userStats;
     }
 
-    public MongoCollection<Document> getUserLevels() {
+    public static MongoCollection<Document> getUserLevels() {
         return UserLevels;
     }
 
-    public static void setUserLevels(MongoCollection userLevels) {
+    public void setUserLevels(MongoCollection userLevels) {
         UserLevels = userLevels;
     }
 
