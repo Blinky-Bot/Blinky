@@ -9,6 +9,7 @@ import me.tsblock.Blinky.Command.Administrator.shutdownCommand;
 import me.tsblock.Blinky.Command.Core.levelCommand;
 import me.tsblock.Blinky.Command.Core.pingCommand;
 import me.tsblock.Blinky.Command.Economy.balanceCommand;
+import me.tsblock.Blinky.Command.Economy.gambleCommand;
 import me.tsblock.Blinky.Command.Economy.hackdollarsCommand;
 import me.tsblock.Blinky.Command.Economy.payCommand;
 import me.tsblock.Blinky.Command.Fun.eightballCommand;
@@ -75,5 +76,6 @@ public class Bot {
         commandHandler.register(new catCommand());
         commandHandler.register(new levelCommand());
         commandHandler.register(new eightballCommand());
+        commandHandler.register(new gambleCommand());
     }
 }

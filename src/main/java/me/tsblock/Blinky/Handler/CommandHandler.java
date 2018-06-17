@@ -17,10 +17,8 @@ import org.bson.Document;
 import org.bson.conversions.Bson;
 
 import java.awt.*;
-import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.*;
 import java.util.List;
-import java.util.Random;
 
 public class CommandHandler {
     private List<Command> registeredCmds = new ArrayList<>();
@@ -30,6 +28,7 @@ public class CommandHandler {
     private String prefix = settings.getPrefix();
     private CustomEmotes emotes = new CustomEmotes();
     private MongoConnect mongoConnect = new MongoConnect();
+    private Timer timer = new Timer();
     public List<Command> getRegisteredCommands() {
         return registeredCmds;
     }
@@ -37,6 +36,7 @@ public class CommandHandler {
         registeredCmds.add(cmd);
     }
     public void handle(GuildMessageReceivedEvent event) {
+        handleXP(event);
         if (!event.getMessage().getContentRaw().startsWith(prefix)) handleXP(event);
         if (!event.getMessage().getContentRaw().startsWith(prefix) || !event.getMessage().getType().equals(MessageType.DEFAULT) || event.getAuthor().isBot()) return;
         String[] notReplacedArgs = event.getMessage().getContentRaw().replaceFirst(prefix, "").split(" ");
@@ -84,9 +84,6 @@ public class CommandHandler {
         Document found = userdoc.find(toFind).first();
         if (found == null) {
             mongoConnect.initLevel(id, e.getGuild().getId());
-            Bson updateXp = new Document("xp", xp);
-            Bson update = new Document("$set", updateXp);
-            userdoc.updateOne(found, update);
         } else {
             int currentXP = found.getInteger("xp");
             int newXP = currentXP + xp;
@@ -115,7 +112,7 @@ public class CommandHandler {
                 MessageEmbed levelup = new EmbedBuilder()
                         .setAuthor("Level Up!", null, "https://i.imgur.com/RLun06c.png")
                         .setDescription("New Level: " + nextlvl)
-                        .setFooter("WIP, expect bugs", null)
+                        .setFooter(e.getAuthor().getName() + e.getAuthor().getDiscriminator(), null)
                         .build();
                 e.getChannel().sendMessage(levelup).queue();
                 return;
