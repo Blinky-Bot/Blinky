@@ -47,10 +47,6 @@ public class Bot {
     public static JDA jda;
     private static Settings settings = SettingsManager.getInstance().getSettings();
     public static void main(String[] args) {
-        if (System.getenv("TRAVIS_CI") == "TRUE") {
-            System.exit(ExitCodes.TRAVIS_CI_TEST);
-            return;
-        }
         mongoConnect.connect();
         try {
             registerCommands();
