@@ -39,7 +39,6 @@ public class payCommand extends Command {
         return Arrays.asList("share", "give");
     }
 
-
     @Override
     public boolean enabled() {
         return true;

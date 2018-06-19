@@ -6,6 +6,7 @@ import me.tsblock.Blinky.Command.Administrator.evalCommand;
 import me.tsblock.Blinky.Command.Administrator.forceCreateWalletCommand;
 import me.tsblock.Blinky.Command.Administrator.sayCommand;
 import me.tsblock.Blinky.Command.Administrator.shutdownCommand;
+import me.tsblock.Blinky.Command.Core.helpCommand;
 import me.tsblock.Blinky.Command.Core.levelCommand;
 import me.tsblock.Blinky.Command.Core.pingCommand;
 import me.tsblock.Blinky.Command.Economy.balanceCommand;
@@ -77,5 +78,6 @@ public class Bot {
         commandHandler.register(new levelCommand());
         commandHandler.register(new eightballCommand());
         commandHandler.register(new gambleCommand());
+        commandHandler.register(new helpCommand());
     }
 }
