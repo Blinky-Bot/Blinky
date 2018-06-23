@@ -45,4 +45,14 @@ public class GetBody {
         EightBall eightBall = gson.fromJson(result, EightBall.class);
         return eightBall.getMagic().getAnswer();
     }
+
+    public static String getDadJokes() throws IOException {
+        String result = null;
+        Request request = new Request.Builder()
+                .url("https://icanhazdadjoke.com/")
+                .header("Accept", "text/plain")
+                .build();
+        Response response = httpClient.newCall(request).execute();
+        return response.body().string();
+    }
 }

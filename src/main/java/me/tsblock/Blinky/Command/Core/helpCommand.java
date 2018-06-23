@@ -48,6 +48,7 @@ public class helpCommand extends Command {
     public void onExecute(GuildMessageReceivedEvent event, Message msg, User user, Guild guild, String... args) {
         Settings setting = SettingsManager.getInstance().getSettings();
         HashMap<String, List<Command>> categories = new HashMap<>();
+        List<Command> commands;
             Bot.getCommandHandler().getRegisteredCommands().forEach(c -> {
                 Class<? extends Command> clazz = c.getClass();
                 String category = clazz.getPackage().getName();
@@ -63,10 +64,20 @@ public class helpCommand extends Command {
                 .setColor(Color.CYAN);
         categories.forEach((cat, cmds) -> {
             StringBuilder line = new StringBuilder();
-            for (Command cmd : cmds)
+            for (Command cmd : cmds) {
+                if (args[0] != null && cmd.getAliases().contains(cmd)) {
+                    String name = cmd.getName();
+                    String description = cmd.getDescription();
+                    String usage = cmd.getUsage();
+
+                    return;
+                } else {
+                    event.getChannel().sendMessage("Command not found, use b.help to list all commands").queue();
+                }
                 line.append("`").append(cmd.getName()).append("`\n");
+            }
                 b.addField(cat, line.toString(), true)
-                        .setFooter("This is a tempory help menu, it will be much better in future", null);
+                        .setFooter("Type b.help <command name> to get a This is a temporary help menu, it will be much better in future", null);
         });
         event.getChannel().sendMessage(b.build()).queue();
     }

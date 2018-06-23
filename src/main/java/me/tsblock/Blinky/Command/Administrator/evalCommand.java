@@ -1,6 +1,8 @@
 package me.tsblock.Blinky.Command.Administrator;
 
+import me.tsblock.Blinky.Bot;
 import me.tsblock.Blinky.Command.Command;
+import me.tsblock.Blinky.Database.MongoConnect;
 import me.tsblock.Blinky.utils.Embed;
 import net.dv8tion.jda.core.EmbedBuilder;
 import net.dv8tion.jda.core.entities.Guild;
@@ -47,6 +49,10 @@ public class evalCommand extends Command {
     public void onExecute(GuildMessageReceivedEvent event, Message msg, User user, Guild guild, String... args) {
         ScriptEngineManager manager = new ScriptEngineManager();
         ScriptEngine engine = manager.getEngineByName("js");
+        engine.put("event", event);
+        engine.put("JDA", Bot.getJDA());
+        engine.put("userstats", MongoConnect.getUserStats());
+        engine.put("userlevels", MongoConnect.getUserLevels());
         try {
             Object result = engine.eval(String.join(",", args));
             embed.sendEmbed("```java\n " + result + "\n```", event.getChannel());

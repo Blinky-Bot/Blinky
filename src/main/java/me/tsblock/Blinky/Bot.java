@@ -13,8 +13,10 @@ import me.tsblock.Blinky.Command.Economy.balanceCommand;
 import me.tsblock.Blinky.Command.Economy.gambleCommand;
 import me.tsblock.Blinky.Command.Economy.hackdollarsCommand;
 import me.tsblock.Blinky.Command.Economy.payCommand;
+import me.tsblock.Blinky.Command.Fun.dadjokesCommand;
 import me.tsblock.Blinky.Command.Fun.eightballCommand;
 import me.tsblock.Blinky.Command.Fun.catCommand;
+import me.tsblock.Blinky.Command.Fun.insultCommand;
 import me.tsblock.Blinky.Database.MongoConnect;
 import me.tsblock.Blinky.Handler.CommandHandler;
 import me.tsblock.Blinky.Handler.EventHandler;
@@ -52,7 +54,7 @@ public class Bot {
             registerCommands();
             jda = new JDABuilder(AccountType.BOT)
                     .setToken(settings.getBotSecret())
-                    .setGame(Game.of(GameType.WATCHING, "tsb#3160"))
+                    .setGame(Game.of(GameType.WATCHING, "ur mom gay xd"))
                     .addEventListener(new EventHandler())
                     .buildBlocking();
         } catch (LoginException | InterruptedException e) {
@@ -75,5 +77,7 @@ public class Bot {
         commandHandler.register(new eightballCommand());
         commandHandler.register(new gambleCommand());
         commandHandler.register(new helpCommand());
+        commandHandler.register(new insultCommand());
+        commandHandler.register(new dadjokesCommand());
     }
 }
