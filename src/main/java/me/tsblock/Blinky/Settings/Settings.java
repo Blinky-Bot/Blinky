@@ -5,7 +5,15 @@ public class Settings {
     private String ownerID;
     private String dataBaseURL;
     private String prefix;
+    private API API;
 
+    public API getAPI() {
+        return API;
+    }
+
+    public void setAPI(API API) {
+        this.API = API;
+    }
 
     public String getPrefix() {
         return prefix;

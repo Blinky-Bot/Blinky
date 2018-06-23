@@ -1,17 +1,23 @@
 package me.tsblock.Blinky.HTTPRequest;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonObject;
 import me.tsblock.Blinky.HTTPRequest.APIJSONFormat.EightBall;
 import me.tsblock.Blinky.HTTPRequest.APIJSONFormat.RandomCat;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.Response;
+import me.tsblock.Blinky.HTTPRequest.APIJSONFormat.ksoft.reddit;
+import me.tsblock.Blinky.Settings.Settings;
+import me.tsblock.Blinky.Settings.SettingsManager;
+import okhttp3.*;
+import org.json.JSONObject;
 
 import java.io.IOException;
 import java.net.URLEncoder;
 
 public class GetBody {
-    static OkHttpClient httpClient = new OkHttpClient();
+    private static OkHttpClient httpClient = new OkHttpClient.Builder()
+            .hostnameVerifier((s, sslSession) -> true).build(); //sorry but im forced to do this
+    private static Settings settings = SettingsManager.getInstance().getSettings();
 
     public static String run(String url) throws IOException {
         Request request =  new Request.Builder()
@@ -54,5 +60,21 @@ public class GetBody {
                 .build();
         Response response = httpClient.newCall(request).execute();
         return response.body().string();
+    }
+
+    public static reddit getMeme() throws IOException {
+        //TODO: fix it
+        final MediaType JSON = MediaType.parse("application/json; charset=utf-8");
+        RequestBody body = RequestBody.create(JSON, "{\"Authorization\", \"" + settings.getAPI().getKsoftsi() + "\"}");
+        Request request = new Request.Builder()
+                .url("https://api.reddit.si/meme/random-meme")
+                .header("Authorization", "Token " + settings.getAPI().getKsoftsi())
+                .post(body)
+                .build();
+        Response response = httpClient.newCall(request).execute();
+        Gson gson = new GsonBuilder().create();
+        System.out.println(response.body().string());
+        reddit reddit = gson.fromJson(response.body().string(), reddit.class);
+        return reddit;
     }
 }

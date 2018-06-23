@@ -50,12 +50,12 @@ public class evalCommand extends Command {
         ScriptEngineManager manager = new ScriptEngineManager();
         ScriptEngine engine = manager.getEngineByName("js");
         engine.put("event", event);
-        engine.put("JDA", Bot.getJDA());
+        engine.put("jda", Bot.getJDA());
         engine.put("userstats", MongoConnect.getUserStats());
         engine.put("userlevels", MongoConnect.getUserLevels());
         try {
             Object result = engine.eval(String.join(",", args));
-            embed.sendEmbed("```java\n " + result + "\n```", event.getChannel());
+            embed.sendEmbed("```java\n" + result + "\n```", event.getChannel());
         } catch (ScriptException e) {
             MessageEmbed embed = new EmbedBuilder()
                     .setTitle("<:redTick:438696459894784000> Error!")

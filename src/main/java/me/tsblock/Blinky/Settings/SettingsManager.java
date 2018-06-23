@@ -74,6 +74,7 @@ public class SettingsManager {
         newSettings.setDataBaseURL("MongoDB URL");
         newSettings.setPrefix("b.");
         newSettings.setAdminList(new String[]{"id 1", "id 2"});
+        newSettings.setAPI(new API("https://api.reddit.si/ token here"));
         return newSettings;
     }
 }

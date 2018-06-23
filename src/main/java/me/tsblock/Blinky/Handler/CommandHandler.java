@@ -36,7 +36,6 @@ public class CommandHandler {
         registeredCmds.add(cmd);
     }
     public void handle(GuildMessageReceivedEvent event) {
-        handleXP(event);
         if (!event.getMessage().getContentRaw().startsWith(prefix)) handleXP(event);
         if (!event.getMessage().getContentRaw().startsWith(prefix) || !event.getMessage().getType().equals(MessageType.DEFAULT) || event.getAuthor().isBot()) return;
         String[] notReplacedArgs = event.getMessage().getContentRaw().replaceFirst(prefix, "").split(" ");

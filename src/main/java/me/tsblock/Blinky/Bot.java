@@ -9,14 +9,9 @@ import me.tsblock.Blinky.Command.Administrator.shutdownCommand;
 import me.tsblock.Blinky.Command.Core.helpCommand;
 import me.tsblock.Blinky.Command.Core.levelCommand;
 import me.tsblock.Blinky.Command.Core.pingCommand;
-import me.tsblock.Blinky.Command.Economy.balanceCommand;
-import me.tsblock.Blinky.Command.Economy.gambleCommand;
-import me.tsblock.Blinky.Command.Economy.hackdollarsCommand;
-import me.tsblock.Blinky.Command.Economy.payCommand;
-import me.tsblock.Blinky.Command.Fun.dadjokesCommand;
-import me.tsblock.Blinky.Command.Fun.eightballCommand;
-import me.tsblock.Blinky.Command.Fun.catCommand;
-import me.tsblock.Blinky.Command.Fun.insultCommand;
+import me.tsblock.Blinky.Command.Core.uptimeCommand;
+import me.tsblock.Blinky.Command.Economy.*;
+import me.tsblock.Blinky.Command.Fun.*;
 import me.tsblock.Blinky.Database.MongoConnect;
 import me.tsblock.Blinky.Handler.CommandHandler;
 import me.tsblock.Blinky.Handler.EventHandler;
@@ -79,5 +74,8 @@ public class Bot {
         commandHandler.register(new helpCommand());
         commandHandler.register(new insultCommand());
         commandHandler.register(new dadjokesCommand());
+        commandHandler.register(new uptimeCommand());
+        commandHandler.register(new dailyCommand());
+        //commandHandler.register(new memeCommand());
     }
 }
