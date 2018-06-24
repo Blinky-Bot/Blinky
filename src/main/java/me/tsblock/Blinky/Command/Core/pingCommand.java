@@ -38,10 +38,10 @@ public class pingCommand extends Command {
     @Override
     public void onExecute(GuildMessageReceivedEvent event, Message msg, User user, Guild guild, String[] args) {
         long beforeMillis = System.currentTimeMillis();
-        msg.getChannel().sendMessage("­").queue(m -> {
+        msg.getChannel().sendMessage("remember to pls steal <@&392546815662227457>").queue(m -> {
             long currentMillis = System.currentTimeMillis() - beforeMillis;
             EmbedBuilder ping = new EmbedBuilder()
-                    .addField("⏱ Roundtrip", currentMillis + "ms", true)
+                    .addField(":stopwatch:  Roundtrip", currentMillis + "ms", true)
                     .addField(":heartpulse: Heartbeat", Bot.getJDA().getPing() + "ms", true)
                     .setColor(new Color(50, 54, 59));
             m.editMessage(ping.build()).override(true).queue();

@@ -3,6 +3,7 @@ package me.tsblock.Blinky.Command.Economy;
 import com.mongodb.client.MongoCollection;
 import me.tsblock.Blinky.Command.Command;
 import me.tsblock.Blinky.Database.MongoConnect;
+import me.tsblock.Blinky.utils.CustomEmotes;
 import me.tsblock.Blinky.utils.Embed;
 import me.tsblock.Blinky.utils.Utils;
 import net.dv8tion.jda.core.EmbedBuilder;
@@ -82,7 +83,7 @@ public class payCommand extends Command {
             userStatsDoc.updateOne(foundToPayUser, targetOperation);
             userStatsDoc.updateOne(selfUserAmount, selfOperation);
             MessageEmbed success = new EmbedBuilder()
-                    .setTitle("✅ Payment Success")
+                    .setTitle(CustomEmotes.tick + " Payment Success")
                     .setDescription("You now have " + "$" + selfUserNewAmount + "\nand they have got " + "$" + toPayNewAmount)
                     .setColor(Color.green)
                     .build();

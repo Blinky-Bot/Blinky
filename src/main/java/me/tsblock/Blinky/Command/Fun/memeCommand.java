@@ -1,6 +1,7 @@
 package me.tsblock.Blinky.Command.Fun;
 
 import me.tsblock.Blinky.Command.Command;
+import me.tsblock.Blinky.HTTPRequest.APIJSONFormat.ksoft.reddit;
 import me.tsblock.Blinky.HTTPRequest.GetBody;
 import net.dv8tion.jda.core.EmbedBuilder;
 import net.dv8tion.jda.core.entities.Guild;
@@ -35,10 +36,11 @@ public class memeCommand extends Command {
     @Override
     public void onExecute(GuildMessageReceivedEvent event, Message msg, User user, Guild guild, String... args) {
         try {
+            reddit reddit = GetBody.getMeme();
             EmbedBuilder meme = new EmbedBuilder()
-                    .setTitle(GetBody.getMeme().getTitle())
-                    .setImage(GetBody.getMeme().getImage_url())
-                    .setFooter(GetBody.getMeme().getUpvotes() + "\uD83D\uDC4D" + " | https://api.ksoft.si/", null)
+                    .setTitle(reddit.getTitle())
+                    .setImage(reddit.getImage_url())
+                    .setFooter(reddit.getUpvotes() + "\uD83D\uDC4D" + " | " + reddit.getSubreddit() + " | https://api.ksoft.si/", null)
                     .setColor(Color.GREEN);
             msg.getChannel().sendMessage(meme.build()).queue();
         } catch (IOException e) {

@@ -56,10 +56,10 @@ public class dailyCommand extends Command {
         MongoCollection<Document> userdoc = MongoConnect.getUserStats();
         Document userdocc = userdoc.find(new Document("id", user.getId())).first();
         if (userdocc != null) {
-            long lastDaily = userdocc.getLong("lastDaily");
+            long lastDaily = userdocc.getInteger("lastDaily");
             if (lastDaily == 0) {
                 update(userdocc, userdoc);
-                Embed.sendEmbed("Added $5000 to your wallet", msg.getChannel());
+                Embed.sendEmbed("Added $1000 to your wallet", msg.getChannel());
                 return;
             }
             long todayDaily = lastDaily + 86400000; //a day
@@ -67,7 +67,7 @@ public class dailyCommand extends Command {
                 Embed.sendEmbed("You have already claimed the rewards.", msg.getChannel());
             } else {
                 update(userdocc, userdoc);
-                Embed.sendEmbed("Added $5000 to your wallet", msg.getChannel());
+                Embed.sendEmbed("Added $1000 to your wallet", msg.getChannel());
             }
         }
     }

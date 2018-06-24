@@ -4,6 +4,7 @@ import com.mongodb.client.MongoCollection;
 import me.tsblock.Blinky.Command.Command;
 import me.tsblock.Blinky.Database.MongoConnect;
 import me.tsblock.Blinky.utils.Embed;
+import me.tsblock.Blinky.utils.Utils;
 import net.dv8tion.jda.core.EmbedBuilder;
 import net.dv8tion.jda.core.entities.Guild;
 import net.dv8tion.jda.core.entities.Message;
@@ -57,11 +58,15 @@ public class gambleCommand extends Command {
     @Override
     public void onExecute(GuildMessageReceivedEvent event, Message msg, User user, Guild guild, String... args) {
         Random random = new Random();
-        int p = random.nextInt(100);
+        int p = random.nextInt(100) + 1;
         long betAmount = Long.parseLong(args[0]);
         long winamount = betAmount * 2;
         MongoCollection<Document> userdoc = MongoConnect.getUserStats();
         Document found = userdoc.find(new Document("id", event.getAuthor().getId())).first();
+        if (betAmount <= 0) {
+            Embed.sendEmbed(betAmount + " is not a number u dumbass", event.getChannel());
+            return;
+        }
         if (found != null) {
             if (found.getLong("balance") < betAmount) {
                 Embed.sendEmbed("You bet too much!", event.getChannel());

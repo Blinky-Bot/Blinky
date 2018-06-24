@@ -49,7 +49,7 @@ public class Bot {
             registerCommands();
             jda = new JDABuilder(AccountType.BOT)
                     .setToken(settings.getBotSecret())
-                    .setGame(Game.of(GameType.WATCHING, "ur mom gay xd"))
+                    .setGame(Game.of(GameType.WATCHING, settings.getPrefix()))
                     .addEventListener(new EventHandler())
                     .buildBlocking();
         } catch (LoginException | InterruptedException e) {
@@ -76,6 +76,7 @@ public class Bot {
         commandHandler.register(new dadjokesCommand());
         commandHandler.register(new uptimeCommand());
         commandHandler.register(new dailyCommand());
-        //commandHandler.register(new memeCommand());
+        commandHandler.register(new memeCommand());
+        commandHandler.register(new urbanCommand());
     }
 }

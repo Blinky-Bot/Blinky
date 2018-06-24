@@ -28,7 +28,6 @@ public class CommandHandler {
     private String prefix = settings.getPrefix();
     private CustomEmotes emotes = new CustomEmotes();
     private MongoConnect mongoConnect = new MongoConnect();
-    private Timer timer = new Timer();
     public List<Command> getRegisteredCommands() {
         return registeredCmds;
     }

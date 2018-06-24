@@ -1,8 +1,6 @@
 package me.tsblock.Blinky.HTTPRequest;
 
 import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.JsonObject;
 import me.tsblock.Blinky.HTTPRequest.APIJSONFormat.EightBall;
 import me.tsblock.Blinky.HTTPRequest.APIJSONFormat.RandomCat;
 import me.tsblock.Blinky.HTTPRequest.APIJSONFormat.ksoft.reddit;
@@ -64,17 +62,19 @@ public class GetBody {
 
     public static reddit getMeme() throws IOException {
         //TODO: fix it
-        final MediaType JSON = MediaType.parse("application/json; charset=utf-8");
-        RequestBody body = RequestBody.create(JSON, "{\"Authorization\", \"" + settings.getAPI().getKsoftsi() + "\"}");
-        Request request = new Request.Builder()
-                .url("https://api.reddit.si/meme/random-meme")
+        Response response = httpClient.newCall(new Request.Builder()
+                .url("https://api.ksoft.si/meme/random-meme")
                 .header("Authorization", "Token " + settings.getAPI().getKsoftsi())
-                .post(body)
-                .build();
-        Response response = httpClient.newCall(request).execute();
-        Gson gson = new GsonBuilder().create();
-        System.out.println(response.body().string());
-        reddit reddit = gson.fromJson(response.body().string(), reddit.class);
+                .addHeader("Accept", "application/json")
+                .build()).execute();
+        Gson gson = new Gson();
+        String result = response.body().string();
+        reddit reddit = gson.fromJson(result, reddit.class);
         return reddit;
+    }
+
+    public static JSONObject getDefine(String word) throws IOException {
+        String result = GetBody.run("http://api.urbandictionary.com/v0/define?term=" + URLEncoder.encode(word, "UTF-8"));
+        return new JSONObject(result);
     }
 }
