@@ -1,5 +1,5 @@
 # Blinky 
-![travisci](https://travis-ci.org/tsblock/Blinky.svg?branch=master) ![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2Ftsblock%2FBlinky.svg?type=shield)
+[![Build Status](https://travis-ci.org/tsblock/Blinky.svg?branch=master)](https://travis-ci.org/tsblock/Blinky) ![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2Ftsblock%2FBlinky.svg?type=shield)
 
 A general-purpose Discord bot written in Java&nbsp;
 

@@ -73,7 +73,7 @@ public class gambleCommand extends Command {
                 return;
             }
             if (p > 50) {
-                Bson update = new Document("balance", winamount);
+                Bson update = new Document("balance", found.getLong("balance") + winamount);
                 Bson updateo = new Document("$set", update);
                 userdoc.updateOne(found, updateo);
                 MessageEmbed win = new EmbedBuilder()

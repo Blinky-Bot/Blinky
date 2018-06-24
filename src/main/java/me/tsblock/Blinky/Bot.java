@@ -17,7 +17,6 @@ import me.tsblock.Blinky.Handler.CommandHandler;
 import me.tsblock.Blinky.Handler.EventHandler;
 import me.tsblock.Blinky.Settings.Settings;
 import me.tsblock.Blinky.Settings.SettingsManager;
-import me.tsblock.Blinky.utils.ExitCodes;
 import net.dv8tion.jda.core.AccountType;
 import net.dv8tion.jda.core.JDA;
 import net.dv8tion.jda.core.JDABuilder;
