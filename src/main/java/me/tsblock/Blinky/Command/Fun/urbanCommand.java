@@ -10,6 +10,7 @@ import net.dv8tion.jda.core.events.message.guild.GuildMessageReceivedEvent;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import java.awt.*;
 import java.io.IOException;
 
 public class urbanCommand extends Command {
@@ -57,7 +58,8 @@ public class urbanCommand extends Command {
                     .setTitle(word)
                     .addField("Definition", definition, false)
                     .addField("Example", example, false)
-                    .setFooter(thumbsup + "\uD83D\uDC4D" + " | " + thumbsdown + "\uD83D\uDC4E", null);
+                    .setFooter(thumbsup + "\uD83D\uDC4D" + " | " + thumbsdown + "\uD83D\uDC4E", null)
+                    .setColor(Color.ORANGE);
             event.getChannel().sendMessage(urbane.build()).queue();
         } catch (IOException e) {
             e.printStackTrace();

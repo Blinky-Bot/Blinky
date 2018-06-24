@@ -56,7 +56,7 @@ public class dailyCommand extends Command {
         MongoCollection<Document> userdoc = MongoConnect.getUserStats();
         Document userdocc = userdoc.find(new Document("id", user.getId())).first();
         if (userdocc != null) {
-            long lastDaily = userdocc.getInteger("lastDaily");
+            long lastDaily = userdocc.getLong("lastDaily");
             if (lastDaily == 0) {
                 update(userdocc, userdoc);
                 Embed.sendEmbed("Added $1000 to your wallet", msg.getChannel());
