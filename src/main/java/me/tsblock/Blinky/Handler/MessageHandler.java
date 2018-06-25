@@ -1,6 +1,7 @@
 package me.tsblock.Blinky.Handler;
 
 import com.mongodb.client.MongoCollection;
+import me.tsblock.Blinky.Bot;
 import me.tsblock.Blinky.Command.Command;
 import me.tsblock.Blinky.Database.MongoConnect;
 import me.tsblock.Blinky.Settings.Settings;
@@ -10,6 +11,7 @@ import me.tsblock.Blinky.utils.Embed;
 import net.dv8tion.jda.core.EmbedBuilder;
 import net.dv8tion.jda.core.entities.MessageEmbed;
 import net.dv8tion.jda.core.entities.MessageType;
+import net.dv8tion.jda.core.entities.User;
 import net.dv8tion.jda.core.events.message.guild.GuildMessageReceivedEvent;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -19,8 +21,9 @@ import org.bson.conversions.Bson;
 import java.awt.*;
 import java.util.*;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
-public class CommandHandler {
+public class MessageHandler {
     private List<Command> registeredCmds = new ArrayList<>();
     private String[] notReplacedArgs;
     private Settings settings = SettingsManager.getInstance().getSettings();
@@ -28,6 +31,7 @@ public class CommandHandler {
     private String prefix = settings.getPrefix();
     private CustomEmotes emotes = new CustomEmotes();
     private MongoConnect mongoConnect = new MongoConnect();
+    private List<User> cooldownList = new ArrayList<>();
     public List<Command> getRegisteredCommands() {
         return registeredCmds;
     }
@@ -36,6 +40,10 @@ public class CommandHandler {
     }
     public void handle(GuildMessageReceivedEvent event) {
         if (!event.getMessage().getContentRaw().startsWith(prefix)) handleXP(event);
+        if (!event.getMessage().getMentionedUsers().isEmpty()) {
+            handleCleverBot(event);
+            return;
+        }
         if (!event.getMessage().getContentRaw().startsWith(prefix) || !event.getMessage().getType().equals(MessageType.DEFAULT) || event.getAuthor().isBot()) return;
         String[] notReplacedArgs = event.getMessage().getContentRaw().replaceFirst(prefix, "").split(" ");
         registeredCmds.forEach(cmd -> {
@@ -49,6 +57,15 @@ public class CommandHandler {
                     }
                     String[] args = Arrays.copyOfRange(notReplacedArgs, 1, notReplacedArgs.length);
                     args = StringUtils.stripAll(args); //trim all the space
+                    if (cooldownList.contains(event.getAuthor())) {
+                        event.getChannel().sendMessage(new EmbedBuilder()
+                                .setTitle("Ratelimited!")
+                                .setDescription("**Wait " + cmd.cooldown() + " more seconds.**")
+                                .setColor(Color.RED)
+                                .build()
+                        ).queue();
+                        return;
+                    }
                     if (ArrayUtils.isEmpty(args) && cmd.needArgs()) {
                         String usage = "Correct Usage: `" + prefix + cmd.getName() + " " + cmd.getUsage() + "`";
                         if (usage.equals(null)) {
@@ -63,9 +80,17 @@ public class CommandHandler {
                         return;
                     }
                     try {
+                        cooldownList.add(event.getAuthor());
                         cmd.onExecute(event, event.getMessage(), event.getAuthor(), event.getGuild(), args);
+                        new Timer().schedule(new TimerTask() {
+                            @Override
+                            public void run() {
+                                cooldownList.remove(event.getAuthor());
+                            }
+                        }, TimeUnit.SECONDS.toMillis(cmd.cooldown()));
+
                     } catch (Error err) {
-                        event.getChannel().sendMessage("Something went wrong while executing this command! \n " + "`" + err.getMessage() + "`" + "\nContact tsb#6722 with this error!").queue();
+                        err.printStackTrace();
                     }
                 }
             });
@@ -118,6 +143,14 @@ public class CommandHandler {
             Bson updateXp = new Document("xp", newXP);
             Bson update = new Document("$set", updateXp);
             userdoc.updateOne(found, update);
+        }
+    }
+
+    private void handleCleverBot(GuildMessageReceivedEvent event) {
+        String answer = "CleverBot API unavailable";
+        if (event.getMessage().getMentionedUsers().get(0).getId().equals(Bot.getJDA().getSelfUser().getId())) {
+            answer = Bot.cleverbot.askQuestion(event.getMessage().getContentRaw().replaceFirst("<@" + Bot.getJDA().getSelfUser().getId() + ">", ""));
+            event.getChannel().sendMessage(answer).queue();
         }
     }
 }

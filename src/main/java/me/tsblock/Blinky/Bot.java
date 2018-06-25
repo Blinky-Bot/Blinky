@@ -13,10 +13,12 @@ import me.tsblock.Blinky.Command.Core.uptimeCommand;
 import me.tsblock.Blinky.Command.Economy.*;
 import me.tsblock.Blinky.Command.Fun.*;
 import me.tsblock.Blinky.Database.MongoConnect;
-import me.tsblock.Blinky.Handler.CommandHandler;
+import me.tsblock.Blinky.Handler.MessageHandler;
 import me.tsblock.Blinky.Handler.EventHandler;
 import me.tsblock.Blinky.Settings.Settings;
 import me.tsblock.Blinky.Settings.SettingsManager;
+import ml.duncte123.CleverBot4J.CleverbotAPI;
+import ml.duncte123.CleverBot4J.CleverbotBuilder;
 import net.dv8tion.jda.core.AccountType;
 import net.dv8tion.jda.core.JDA;
 import net.dv8tion.jda.core.JDABuilder;
@@ -25,6 +27,7 @@ import net.dv8tion.jda.core.entities.Game.GameType;
 import org.slf4j.LoggerFactory;
 
 import javax.security.auth.login.LoginException;
+import java.util.UUID;
 
 public class Bot {
     //set logger's level to error only
@@ -35,12 +38,18 @@ public class Bot {
         root.setLevel(Level.ERROR);
     }
 
-    private static CommandHandler commandHandler = new CommandHandler();
-    public static CommandHandler getCommandHandler() {
-        return commandHandler;
+    private static MessageHandler messageHandler = new MessageHandler();
+    public static MessageHandler getMessageHandler() {
+        return messageHandler;
     }
     public static MongoConnect mongoConnect = new MongoConnect();
     public static JDA jda;
+
+
+    public static CleverbotAPI cleverbot = new CleverbotBuilder()
+            .setKeys("oxXo0mB7KRlNJ8An", "gg7ANyrFCbb52RbxzxcLiOc4BzqJJ3mQ")
+            .setNickname(UUID.randomUUID().toString())
+            .build();
     private static Settings settings = SettingsManager.getInstance().getSettings();
     public static void main(String[] args) {
         mongoConnect.connect();
@@ -58,24 +67,25 @@ public class Bot {
 
     public static JDA getJDA() { return jda; }
     private static void registerCommands() {
-        commandHandler.register(new pingCommand());
-        commandHandler.register(new evalCommand());
-        commandHandler.register(new shutdownCommand());
-        commandHandler.register(new balanceCommand());
-        commandHandler.register(new hackdollarsCommand());
-        commandHandler.register(new payCommand());
-        commandHandler.register(new forceCreateWalletCommand());
-        commandHandler.register(new sayCommand());
-        commandHandler.register(new catCommand());
-        commandHandler.register(new levelCommand());
-        commandHandler.register(new eightballCommand());
-        commandHandler.register(new gambleCommand());
-        commandHandler.register(new helpCommand());
-        commandHandler.register(new insultCommand());
-        commandHandler.register(new dadjokesCommand());
-        commandHandler.register(new uptimeCommand());
-        commandHandler.register(new dailyCommand());
-        commandHandler.register(new memeCommand());
-        commandHandler.register(new urbanCommand());
+        messageHandler.register(new pingCommand());
+        messageHandler.register(new evalCommand());
+        messageHandler.register(new shutdownCommand());
+        messageHandler.register(new balanceCommand());
+        messageHandler.register(new hackdollarsCommand());
+        messageHandler.register(new payCommand());
+        messageHandler.register(new forceCreateWalletCommand());
+        messageHandler.register(new sayCommand());
+        messageHandler.register(new catCommand());
+        messageHandler.register(new levelCommand());
+        messageHandler.register(new eightballCommand());
+        messageHandler.register(new gambleCommand());
+        messageHandler.register(new helpCommand());
+        messageHandler.register(new insultCommand());
+        messageHandler.register(new dadjokesCommand());
+        messageHandler.register(new uptimeCommand());
+        messageHandler.register(new dailyCommand());
+        messageHandler.register(new memeCommand());
+        messageHandler.register(new urbanCommand());
+        messageHandler.register(new robCommand());
     }
 }

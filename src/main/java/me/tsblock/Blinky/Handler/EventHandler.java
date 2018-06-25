@@ -7,6 +7,7 @@ import net.dv8tion.jda.core.hooks.ListenerAdapter;
 public class EventHandler extends ListenerAdapter {
     @Override
     public void onGuildMessageReceived(GuildMessageReceivedEvent event) {
-        Bot.getCommandHandler().handle(event);
+        Bot.getMessageHandler().handle(event);
     }
+
 }

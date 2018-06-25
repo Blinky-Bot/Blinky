@@ -38,7 +38,7 @@ public class pingCommand extends Command {
     @Override
     public void onExecute(GuildMessageReceivedEvent event, Message msg, User user, Guild guild, String[] args) {
         long beforeMillis = System.currentTimeMillis();
-        msg.getChannel().sendMessage("remember to pls steal <@&392546815662227457>").queue(m -> {
+        msg.getChannel().sendMessage(".").queue(m -> {
             long currentMillis = System.currentTimeMillis() - beforeMillis;
             EmbedBuilder ping = new EmbedBuilder()
                     .addField(":stopwatch:  Roundtrip", currentMillis + "ms", true)

@@ -9,7 +9,7 @@ repositories {
     mavenCentral()
     jcenter()
     maven {
-        name: 'jitpack'
+        name 'jitpack'
         url 'https://jitpack.io'
     }
 }
@@ -25,7 +25,7 @@ dependencies {
     compile 'com.github.duncte123:CleverBot4J:-SNAPSHOT'
 }
 group 'me.tsblock'
-version '0.1-PRE-ALPHA'
+version '0.0.2-PRE-ALPHA'
 
 mainClassName = 'me.tsblock.Blinky.Bot'
 

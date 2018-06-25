@@ -7,6 +7,7 @@ import com.mongodb.client.MongoDatabase;
 import me.tsblock.Blinky.Settings.Settings;
 import me.tsblock.Blinky.Settings.SettingsManager;
 import org.bson.Document;
+import org.bson.conversions.Bson;
 
 public class MongoConnect {
     private Settings settings = SettingsManager.getInstance().getSettings();
@@ -23,21 +24,31 @@ public class MongoConnect {
         setUserLevels(database.getCollection("UserLevels"));
     }
 
-    public void initUserStats(String id) {
+    public static void initUserStats(String id) {
         Document document = new Document("id", id);
         document.append("balance", 300L);
-        document.append("lastDaily", 0);
+        document.append("lastDaily", "");
         document.append("donor", false);
         UserStats.insertOne(document);
     }
 
-    public void initLevel(String id, String GuildID) {
+    public static void initLevel(String id, String GuildID) {
         Document doc = new Document("id", id);
         doc.append("xp", 0);
         doc.append("level", 1);
         doc.append("maxLevel", false);
         doc.append("guildID", GuildID);
         UserLevels.insertOne(doc);
+    }
+
+    public static void updateDocument(Document document, MongoCollection<Document> collection, String key, Object value) {
+        Document found = collection.find(document).first();
+        if (found != null) {
+            Bson operation = new Document("$set", new Document(key, value));
+            collection.updateOne(found, operation);
+        } else {
+            throw new NullPointerException();
+        }
     }
 
     public static MongoCollection<Document> getUserStats() {

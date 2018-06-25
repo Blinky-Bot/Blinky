@@ -11,10 +11,15 @@ import net.dv8tion.jda.core.events.message.guild.GuildMessageReceivedEvent;
 import org.bson.Document;
 import org.bson.conversions.Bson;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 
 public class dailyCommand extends Command {
+    DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");
+    String todayDaily = dateFormat.format(new Date());
     @Override
     public String getName() {
         return "daily";
@@ -52,27 +57,26 @@ public class dailyCommand extends Command {
 
     @Override
     public void onExecute(GuildMessageReceivedEvent event, Message msg, User user, Guild guild, String... args) {
-        //TODO: smh finish the daily command
         MongoCollection<Document> userdoc = MongoConnect.getUserStats();
         Document userdocc = userdoc.find(new Document("id", user.getId())).first();
         if (userdocc != null) {
-            long lastDaily = userdocc.getLong("lastDaily");
-            if (lastDaily == 0) {
+            String lastDaily = userdocc.getString("lastDaily");
+//            if (lastDaily.isEmpty() || lastDaily == null) {
+//                update(userdocc, userdoc);
+//                Embed.sendEmbed("Added $1000 to your wallet", msg.getChannel());
+//                return;
+//            }
+            if (!todayDaily.equalsIgnoreCase(lastDaily)) {
                 update(userdocc, userdoc);
                 Embed.sendEmbed("Added $1000 to your wallet", msg.getChannel());
-                return;
-            }
-            long todayDaily = lastDaily + 86400000; //a day
-            if (lastDaily < todayDaily) {
-                Embed.sendEmbed("You have already claimed the rewards.", msg.getChannel());
             } else {
-                update(userdocc, userdoc);
-                Embed.sendEmbed("Added $1000 to your wallet", msg.getChannel());
+                Embed.sendEmbed("You have already claimed the rewards. Wait one more day to claim it again.", msg.getChannel());
             }
         }
     }
     private void update(Document userdocc, MongoCollection<Document> userdoc) {
-        Bson update = new Document("$set", new Document("balance", userdocc.getLong("balance") + 1000).append("lastDaily", System.currentTimeMillis()));
+        Bson ok = new Document("balance", userdocc.getLong("balance") + 1000).append("lastDaily", todayDaily);
+        Bson update = new Document("$set", ok);
         userdoc.updateOne(userdocc, update);
     }
 }
