@@ -46,7 +46,7 @@ public class helpCommand extends Command {
     public void onExecute(GuildMessageReceivedEvent event, Message msg, User user, Guild guild, String... args) {
         Settings setting = SettingsManager.getInstance().getSettings();
         HashMap<String, List<Command>> categories = new HashMap<>();
-            Bot.getMessageHandler().getRegisteredCommands().forEach(c -> {
+            Bot.getCommandHandler().getRegisteredCommands().forEach(c -> {
                 Class<? extends Command> clazz = c.getClass();
                 String category = clazz.getPackage().getName();
                 category = category.split("\\.")[category.split("\\.").length-1];
@@ -58,7 +58,7 @@ public class helpCommand extends Command {
             });
         if (args.length > 0) {
             String toCheckCmd = args[0];
-            for (Command cmd : Bot.getMessageHandler().getRegisteredCommands()) {
+            for (Command cmd : Bot.getCommandHandler().getRegisteredCommands()) {
                 if (cmd.getName().equalsIgnoreCase(toCheckCmd)) {
                     String name = cmd.getName();
                     String description = cmd.getDescription();
@@ -68,8 +68,10 @@ public class helpCommand extends Command {
                             .setColor(Color.CYAN)
                             .addField("Description", "```" + description + "```", false);
                     if (usage != null) asdf.addField("Usage", "```" + setting.getPrefix() + name + " " + usage + "```", false);
-                    if (!cmd.getAliases().isEmpty()) asdf.addField("Aliases", "```" + StringUtils.join(cmd.getAliases() + "```", ", "), false);
+                    if (!cmd.getAliases().isEmpty()) asdf.addField("Aliases", "```" + StringUtils.join(cmd.getAliases() , ", ") + "```", false);
+                    if (cmd.cooldown() > 0) asdf.addField("Cooldown", cmd.cooldown() + " seconds", true);
                     event.getChannel().sendMessage(asdf.build()).queue();
+                    return;
                 }
             }
             return;

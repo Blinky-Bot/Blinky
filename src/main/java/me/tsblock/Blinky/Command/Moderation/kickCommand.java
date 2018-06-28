@@ -1,59 +1,56 @@
-package me.tsblock.Blinky.Command.Fun;
+package me.tsblock.Blinky.Command.Moderation;
 
 import me.tsblock.Blinky.Command.Command;
-import me.tsblock.Blinky.HTTPRequest.GetBody;
 import net.dv8tion.jda.core.entities.Guild;
 import net.dv8tion.jda.core.entities.Message;
 import net.dv8tion.jda.core.entities.User;
 import net.dv8tion.jda.core.events.message.guild.GuildMessageReceivedEvent;
 
-import java.io.IOException;
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 
-public class dadjokesCommand extends Command {
+public class kickCommand extends Command {
     @Override
     public String getName() {
-        return "dadjokes";
+        return "kick";
     }
 
     @Override
     public String getDescription() {
-        return "Ranmdom dad jokes";
+        return "Kick a memeber";
     }
 
     @Override
     public String getUsage() {
-        return null;
+        return super.getUsage();
     }
 
     @Override
     public List<String> getAliases() {
-        return Arrays.asList("joke", "jokes", "dadjokes", "puns");
+        return super.getAliases();
     }
 
     @Override
     public boolean enabled() {
-        return true;
+        return super.enabled();
     }
 
     @Override
     public boolean ownerOnly() {
-        return false;
+        return super.ownerOnly();
     }
 
     @Override
     public boolean needArgs() {
-        return false;
+        return super.needArgs();
+    }
+
+    @Override
+    public long cooldown() {
+        return 5;
     }
 
     @Override
     public void onExecute(GuildMessageReceivedEvent event, Message msg, User user, Guild guild, String... args) {
-        try {
-            msg.getChannel().sendMessage(GetBody.getDadJokes()).queue();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+
     }
 }

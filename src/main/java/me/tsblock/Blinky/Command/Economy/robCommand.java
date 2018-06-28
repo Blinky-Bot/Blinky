@@ -21,7 +21,7 @@ public class robCommand extends Command {
 
     @Override
     public String getDescription() {
-        return "Robs other people to get cash fast!\nNote: You have only 7~10% chance to rob other.";
+        return "Robs other people to get cash fast!\nNote: You have only 7~30% chance to rob other.";
     }
 
     @Override

@@ -8,10 +8,6 @@ plugins {
 repositories {
     mavenCentral()
     jcenter()
-    maven {
-        name 'jitpack'
-        url 'https://jitpack.io'
-    }
 }
 
 
@@ -22,7 +18,6 @@ dependencies {
     compile 'com.google.code.gson:gson:2.8.2'
     compile 'org.mongodb:mongodb-driver:3.8.0-beta3'
     compile group: 'org.apache.commons', name: 'commons-lang3', version: '3.1'
-    compile 'com.github.duncte123:CleverBot4J:-SNAPSHOT'
 }
 group 'me.tsblock'
 version '0.0.2-PRE-ALPHA'

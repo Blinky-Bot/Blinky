@@ -51,6 +51,11 @@ public class gambleCommand extends Command {
     }
 
     @Override
+    public long cooldown() {
+        return 10;
+    }
+
+    @Override
     public boolean needArgs() {
         return true;
     }

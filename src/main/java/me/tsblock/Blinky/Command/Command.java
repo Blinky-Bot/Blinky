@@ -22,6 +22,6 @@ public class Command {
     public boolean enabled() { return false; }
     public boolean ownerOnly() { return false; }
     public boolean needArgs() { return false; }
-    public long cooldown() { return 3; }
+    public long cooldown() { return 0; }
     public void onExecute(GuildMessageReceivedEvent event, Message msg, User user, Guild guild, String... args) { event.getChannel().sendMessage("DUDE WHAT'S WRONG WITH YOU HOW CAN YOU FORGOT TO REMOVE THE LINE SMH").queue(); }
 }

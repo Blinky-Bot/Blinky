@@ -1,7 +1,6 @@
 package me.tsblock.Blinky.Handler;
 
 import com.mongodb.client.MongoCollection;
-import me.tsblock.Blinky.Bot;
 import me.tsblock.Blinky.Command.Command;
 import me.tsblock.Blinky.Database.MongoConnect;
 import me.tsblock.Blinky.Settings.Settings;
@@ -23,15 +22,14 @@ import java.util.*;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
-public class MessageHandler {
+public class CommandHandler {
     private List<Command> registeredCmds = new ArrayList<>();
     private String[] notReplacedArgs;
     private Settings settings = SettingsManager.getInstance().getSettings();
     private Embed embed = new Embed();
     private String prefix = settings.getPrefix();
     private CustomEmotes emotes = new CustomEmotes();
-    private MongoConnect mongoConnect = new MongoConnect();
-    private List<User> cooldownList = new ArrayList<>();
+    private Map<Command, Map<User, Date>> cooldownList = new HashMap<>();
     public List<Command> getRegisteredCommands() {
         return registeredCmds;
     }
@@ -40,30 +38,18 @@ public class MessageHandler {
     }
     public void handle(GuildMessageReceivedEvent event) {
         if (!event.getMessage().getContentRaw().startsWith(prefix)) handleXP(event);
-        if (!event.getMessage().getMentionedUsers().isEmpty()) {
-            handleCleverBot(event);
-            return;
-        }
         if (!event.getMessage().getContentRaw().startsWith(prefix) || !event.getMessage().getType().equals(MessageType.DEFAULT) || event.getAuthor().isBot()) return;
         String[] notReplacedArgs = event.getMessage().getContentRaw().replaceFirst(prefix, "").split(" ");
         registeredCmds.forEach(cmd -> {
             List<String> aliases = new ArrayList<>(cmd.getAliases());
             aliases.add(cmd.getName());
             aliases.forEach(a -> {
+                if (!cooldownList.containsKey(cmd)) cooldownList.put(cmd, new HashMap<>());
                 if (notReplacedArgs[0].equalsIgnoreCase(a) && cmd.enabled()) {
-                    if(cmd.ownerOnly() && !event.getAuthor().getId().equals(settings.getOwnerID())  ) {
-                        embed.sendEmbed("Sorry, but you need **Owner** permission to use this command", event.getChannel());
-                        return;
-                    }
                     String[] args = Arrays.copyOfRange(notReplacedArgs, 1, notReplacedArgs.length);
                     args = StringUtils.stripAll(args); //trim all the space
-                    if (cooldownList.contains(event.getAuthor())) {
-                        event.getChannel().sendMessage(new EmbedBuilder()
-                                .setTitle("Ratelimited!")
-                                .setDescription("**Wait " + cmd.cooldown() + " more seconds.**")
-                                .setColor(Color.RED)
-                                .build()
-                        ).queue();
+                    if(cmd.ownerOnly() && !event.getAuthor().getId().equals(settings.getOwnerID())  ) {
+                        embed.sendEmbed("Sorry, but you need **Owner** permission to use this command", event.getChannel());
                         return;
                     }
                     if (ArrayUtils.isEmpty(args) && cmd.needArgs()) {
@@ -79,16 +65,34 @@ public class MessageHandler {
                         event.getChannel().sendMessage(missingArguments).queue();
                         return;
                     }
-                    try {
-                        cooldownList.add(event.getAuthor());
-                        cmd.onExecute(event, event.getMessage(), event.getAuthor(), event.getGuild(), args);
-                        new Timer().schedule(new TimerTask() {
-                            @Override
-                            public void run() {
-                                cooldownList.remove(event.getAuthor());
+                    //cooldown handling
+                    if (cmd.cooldown() > 0) {
+                        long now = new Date().getTime();
+                        long cooldownAmount = cmd.cooldown() * 1000;
+                        if (!cooldownList.get(cmd).containsKey(event.getAuthor())) {
+                            cooldownList.get(cmd).put(event.getAuthor(), new Date());
+                            new Timer().schedule(new TimerTask() {
+                                @Override
+                                public void run() {
+                                    cooldownList.remove(event.getAuthor());
+                                }
+                            }, TimeUnit.SECONDS.toMillis(cmd.cooldown()));
+                        } else {
+                            long expirationTime = cooldownList.get(cmd).get(event.getAuthor()).getTime() + cooldownAmount;
+                            if (now < expirationTime) {
+                                long timeLeft = TimeUnit.MILLISECONDS.toSeconds(expirationTime - now);
+                                event.getChannel().sendMessage(new EmbedBuilder()
+                                        .setTitle(CustomEmotes.cross + "Ratelimited!1")
+                                        .setDescription("Wait `" + timeLeft + "` more seconds then try again.")
+                                        .setColor(Color.red)
+                                        .build()
+                                ).queue();
+                                return;
                             }
-                        }, TimeUnit.SECONDS.toMillis(cmd.cooldown()));
-
+                        }
+                    }
+                    try {
+                        cmd.onExecute(event, event.getMessage(), event.getAuthor(), event.getGuild(), args);
                     } catch (Error err) {
                         err.printStackTrace();
                     }
@@ -101,12 +105,12 @@ public class MessageHandler {
         Random random = new Random();
         int xp = random.nextInt(10) + 1;
         String id = e.getAuthor().getId();
-        MongoCollection<Document> userdoc = mongoConnect.getUserLevels();
+        MongoCollection<Document> userdoc = MongoConnect.getUserLevels();
         Document toFind = new Document("id", id);
         toFind.append("guildID", e.getGuild().getId());
         Document found = userdoc.find(toFind).first();
         if (found == null) {
-            mongoConnect.initLevel(id, e.getGuild().getId());
+            MongoConnect.initLevel(id, e.getGuild().getId());
         } else {
             int currentXP = found.getInteger("xp");
             int newXP = currentXP + xp;
@@ -146,11 +150,5 @@ public class MessageHandler {
         }
     }
 
-    private void handleCleverBot(GuildMessageReceivedEvent event) {
-        String answer = "CleverBot API unavailable";
-        if (event.getMessage().getMentionedUsers().get(0).getId().equals(Bot.getJDA().getSelfUser().getId())) {
-            answer = Bot.cleverbot.askQuestion(event.getMessage().getContentRaw().replaceFirst("<@" + Bot.getJDA().getSelfUser().getId() + ">", ""));
-            event.getChannel().sendMessage(answer).queue();
-        }
-    }
+
 }

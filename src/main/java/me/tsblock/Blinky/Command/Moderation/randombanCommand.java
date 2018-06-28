@@ -1,26 +1,28 @@
-package me.tsblock.Blinky.Command.Fun;
+package me.tsblock.Blinky.Command.Moderation;
 
 import me.tsblock.Blinky.Command.Command;
-import me.tsblock.Blinky.HTTPRequest.GetBody;
+import me.tsblock.Blinky.utils.Embed;
 import net.dv8tion.jda.core.entities.Guild;
+import net.dv8tion.jda.core.entities.Member;
 import net.dv8tion.jda.core.entities.Message;
 import net.dv8tion.jda.core.entities.User;
 import net.dv8tion.jda.core.events.message.guild.GuildMessageReceivedEvent;
+import net.dv8tion.jda.core.exceptions.HierarchyException;
+import net.dv8tion.jda.core.exceptions.InsufficientPermissionException;
 
-import java.io.IOException;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.Random;
 
-public class dadjokesCommand extends Command {
+public class randombanCommand extends Command {
     @Override
     public String getName() {
-        return "dadjokes";
+        return "randomban";
     }
 
     @Override
     public String getDescription() {
-        return "Ranmdom dad jokes";
+        return "Randomly select member to ban!";
     }
 
     @Override
@@ -30,7 +32,7 @@ public class dadjokesCommand extends Command {
 
     @Override
     public List<String> getAliases() {
-        return Arrays.asList("joke", "jokes", "dadjokes", "puns");
+        return Collections.emptyList();
     }
 
     @Override
@@ -49,11 +51,18 @@ public class dadjokesCommand extends Command {
     }
 
     @Override
+    public long cooldown() {
+        return 5;
+    }
+
+    @Override
     public void onExecute(GuildMessageReceivedEvent event, Message msg, User user, Guild guild, String... args) {
+        List<Member> memberList = guild.getMembers();
+        Member lolrekt = memberList.get(new Random().nextInt(memberList.size()));
         try {
-            msg.getChannel().sendMessage(GetBody.getDadJokes()).queue();
-        } catch (IOException e) {
-            e.printStackTrace();
+            guild.getController().ban(lolrekt, 0).queue();
+        } catch (HierarchyException | InsufficientPermissionException e) {
+            Embed.sendEmbed("Looks like I don't have permission to ban **" + lolrekt.getUser().getName() + "**.", msg.getChannel());
         }
     }
 }
