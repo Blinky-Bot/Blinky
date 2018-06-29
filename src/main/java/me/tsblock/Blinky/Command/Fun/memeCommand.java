@@ -38,7 +38,7 @@ public class memeCommand extends Command {
         try {
             reddit reddit = GetBody.getMeme();
             EmbedBuilder meme = new EmbedBuilder()
-                    .setTitle(reddit.getTitle())
+                    .setTitle(reddit.getTitle(), reddit.getSource())
                     .setImage(reddit.getImage_url())
                     .setFooter(reddit.getUpvotes() + "\uD83D\uDC4D" + " | " + reddit.getSubreddit() + " | https://api.ksoft.si/", null)
                     .setColor(Color.GREEN);
