@@ -2,6 +2,7 @@ package me.tsblock.Blinky.Database;
 
 import com.mongodb.MongoClient;
 import com.mongodb.MongoClientURI;
+import com.mongodb.Tag;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 import me.tsblock.Blinky.Settings.Settings;
@@ -15,13 +16,16 @@ public class MongoConnect {
     private static MongoCollection GuildSettings;
     private static MongoCollection UserStats;
     private static MongoCollection UserLevels;
+    private static MongoCollection<Document> Tags;
+
 
     public void connect() {
         MongoClient client = new MongoClient(new MongoClientURI(settings.getDataBaseURL()));
         setDatabase(client.getDatabase("plexio"));
-        System.out.println("Connected to database");
         setUserStats(database.getCollection("UserStats"));
         setUserLevels(database.getCollection("UserLevels"));
+        setTags(database.getCollection("Tags"));
+        System.out.println("Connected to database");
     }
 
     public static void initUserStats(String id) {
@@ -51,6 +55,27 @@ public class MongoConnect {
         }
     }
 
+    public static void addTag(String name, String content, String id) {
+        Document doc = new Document("id" ,id)
+                .append("name", name)
+                .append("content", content);
+        Tags.insertOne(doc);
+    }
+
+    public static void removeTag(String name, String id) {
+        Tags.deleteOne(new Document("name", name).append("id", id));
+    }
+
+    public static String getTag(String name) {
+        Document found = Tags.find(new Document("name", name)).first();
+        return found.getString("content");
+    }
+
+    public static void transferTag(String name, String newid) {
+        Bson operation = new Document("$set", new Document("id", newid));
+        Tags.updateOne(new Document("name", name), operation);
+    }
+
     public static MongoCollection<Document> getUserStats() {
         return UserStats;
     }
@@ -69,5 +94,13 @@ public class MongoConnect {
 
     public void setDatabase(MongoDatabase database) {
         this.database = database;
+    }
+
+    public static MongoCollection getTags() {
+        return Tags;
+    }
+
+    public void setTags(MongoCollection tags) {
+        Tags = tags;
     }
 }

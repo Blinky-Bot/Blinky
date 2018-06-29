@@ -1,7 +1,9 @@
 package me.tsblock.Blinky.Command.Moderation;
 
+import me.tsblock.Blinky.Bot;
 import me.tsblock.Blinky.Command.Command;
 import me.tsblock.Blinky.utils.Embed;
+import net.dv8tion.jda.core.Permission;
 import net.dv8tion.jda.core.entities.Guild;
 import net.dv8tion.jda.core.entities.Member;
 import net.dv8tion.jda.core.entities.Message;
@@ -59,6 +61,13 @@ public class randombanCommand extends Command {
     public void onExecute(GuildMessageReceivedEvent event, Message msg, User user, Guild guild, String... args) {
         List<Member> memberList = guild.getMembers();
         Member lolrekt = memberList.get(new Random().nextInt(memberList.size()));
+        if(!guild.getMemberById(Bot.getJDA().getSelfUser().getId()).getPermissions().contains(Permission.BAN_MEMBERS)) {
+            Embed.sendEmbed("Looks like I don't have permission to ban **" + lolrekt.getUser().getName() + "**.", msg.getChannel());
+            return;
+        } else if (!guild.getMember(user).getPermissions().contains(Permission.BAN_MEMBERS)) {
+            Embed.sendEmbed("You don't have permission to ban members.", msg.getChannel());
+            return;
+        }
         try {
             guild.getController().ban(lolrekt, 0).queue();
         } catch (HierarchyException | InsufficientPermissionException e) {

@@ -12,7 +12,12 @@ import me.tsblock.Blinky.Command.Core.pingCommand;
 import me.tsblock.Blinky.Command.Core.uptimeCommand;
 import me.tsblock.Blinky.Command.Economy.*;
 import me.tsblock.Blinky.Command.Fun.*;
+import me.tsblock.Blinky.Command.Moderation.pruneCommand;
 import me.tsblock.Blinky.Command.Moderation.randombanCommand;
+import me.tsblock.Blinky.Command.Tag.addCommand;
+import me.tsblock.Blinky.Command.Tag.removeCommand;
+import me.tsblock.Blinky.Command.Tag.tagCommand;
+import me.tsblock.Blinky.Command.Tag.transferCommand;
 import me.tsblock.Blinky.Database.MongoConnect;
 import me.tsblock.Blinky.Handler.CommandHandler;
 import me.tsblock.Blinky.Handler.EventHandler;
@@ -85,5 +90,11 @@ public class Bot {
         commandHandler.register(new urbanCommand());
         //Moderation
         commandHandler.register(new randombanCommand());
+        commandHandler.register(new pruneCommand());
+        //Tags
+        commandHandler.register(new addCommand());
+        commandHandler.register(new removeCommand());
+        commandHandler.register(new tagCommand());
+        commandHandler.register(new transferCommand());
     }
 }
