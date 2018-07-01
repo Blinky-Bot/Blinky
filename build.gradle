@@ -22,6 +22,10 @@ dependencies {
 }
 compileJava.options.encoding = 'UTF-8'
 
+task wrapper(type: Wrapper) {
+    gradleVersion = '4.8.1' //version required
+}
+
 group 'me.tsblock'
 version '0.0.2-PRE-ALPHA'
 
