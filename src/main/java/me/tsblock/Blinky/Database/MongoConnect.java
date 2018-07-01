@@ -7,6 +7,7 @@ import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 import me.tsblock.Blinky.Settings.Settings;
 import me.tsblock.Blinky.Settings.SettingsManager;
+import net.dv8tion.jda.core.entities.Message;
 import org.bson.Document;
 import org.bson.conversions.Bson;
 
@@ -16,6 +17,9 @@ public class MongoConnect {
     private static MongoCollection GuildSettings;
     private static MongoCollection UserStats;
     private static MongoCollection UserLevels;
+
+
+    private static MongoCollection ReactionMessages;
     private static MongoCollection<Document> Tags;
 
 
@@ -25,6 +29,7 @@ public class MongoConnect {
         setUserStats(database.getCollection("UserStats"));
         setUserLevels(database.getCollection("UserLevels"));
         setTags(database.getCollection("Tags"));
+        setReactionMessages(database.getCollection("ReactionMessages"));
         System.out.println("Connected to database");
     }
 
@@ -76,6 +81,7 @@ public class MongoConnect {
         Tags.updateOne(new Document("name", name), operation);
     }
 
+
     public static MongoCollection<Document> getUserStats() {
         return UserStats;
     }
@@ -102,5 +108,12 @@ public class MongoConnect {
 
     public void setTags(MongoCollection tags) {
         Tags = tags;
+    }
+    public static MongoCollection getReactionMessages() {
+        return ReactionMessages;
+    }
+
+    public static void setReactionMessages(MongoCollection reactionMessages) {
+        ReactionMessages = reactionMessages;
     }
 }

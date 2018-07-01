@@ -29,7 +29,7 @@ public class helpCommand extends Command {
 
     @Override
     public String getDescription() {
-        return "Get a list of available commands";
+        return "Seriously? You need to get information for a help command?!?!? What's wrong with you?";
     }
 
     @Override
@@ -79,6 +79,7 @@ public class helpCommand extends Command {
         EmbedBuilder b = new EmbedBuilder()
                 .setTitle("Help menu")
                 .setColor(Color.CYAN)
+                .setThumbnail("https://i.imgur.com/mG1JiGT.png")
                 .setDescription("Type b.help [command name] to get more information about a command.\nUsage syntax: <required argument> [optional argument]");
         categories.forEach((cat, cmds) -> {
             StringBuilder line = new StringBuilder();

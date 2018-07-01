@@ -82,8 +82,6 @@ public class pruneCommand extends Command {
                         if (idkhowicallthislol > 1) {
                             channel.getHistory().retrievePast(idkhowicallthislol).queue((List<Message> retrieved2) -> channel.deleteMessages(retrieved2).queue());
                         }
-
-                        System.out.println("ur mum gae " + i);
                     }
                 });
                 event.getChannel().sendMessage("Successfully deleted `" + toDelete + "` messages").queue(m -> m.delete().queueAfter(3, TimeUnit.SECONDS));

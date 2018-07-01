@@ -1,15 +1,16 @@
 package me.tsblock.Blinky.Command.Administrator;
 
+import com.mongodb.client.MongoCollection;
 import me.tsblock.Blinky.Bot;
 import me.tsblock.Blinky.Command.Command;
 import me.tsblock.Blinky.Database.MongoConnect;
-import me.tsblock.Blinky.utils.Embed;
 import net.dv8tion.jda.core.EmbedBuilder;
 import net.dv8tion.jda.core.entities.Guild;
 import net.dv8tion.jda.core.entities.Message;
 import net.dv8tion.jda.core.entities.MessageEmbed;
 import net.dv8tion.jda.core.entities.User;
 import net.dv8tion.jda.core.events.message.guild.GuildMessageReceivedEvent;
+import org.bson.Document;
 
 import javax.script.ScriptEngine;
 import javax.script.ScriptEngineManager;
@@ -17,9 +18,11 @@ import javax.script.ScriptException;
 import java.awt.*;
 import java.util.Collections;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
+import java.util.concurrent.TimeUnit;
 
 public class evalCommand extends Command {
-    private Embed embed = new Embed();
     @Override
     public String getName() {
         return "eval";
@@ -49,13 +52,30 @@ public class evalCommand extends Command {
     public void onExecute(GuildMessageReceivedEvent event, Message msg, User user, Guild guild, String... args) {
         ScriptEngineManager manager = new ScriptEngineManager();
         ScriptEngine engine = manager.getEngineByName("js");
+        MongoCollection<Document> ReactionMessages = MongoConnect.getReactionMessages();
         engine.put("event", event);
         engine.put("jda", Bot.getJDA());
-        engine.put("userstats", MongoConnect.getUserStats());
-        engine.put("userlevels", MongoConnect.getUserLevels());
         try {
-            Object result = engine.eval(String.join(",", args));
-            embed.sendEmbed("```java\n" + result + "\n```", event.getChannel());
+            Object result = engine.eval(String.join(" ", args));
+            MessageEmbed evaled = new EmbedBuilder()
+                    .setDescription("```xl\n" + result + "\n```")
+                    .setFooter("React ⛔ to remove", null)
+                    .build();
+            event.getChannel().sendMessage(evaled).queue(m -> {
+                m.addReaction("⛔").queue();
+                Document doc = new Document("messageID", m.getId())
+                        .append("emote", "⛔")
+                        .append("userID", user.getId())
+                        .append("type", "evalDelete");
+                ReactionMessages.insertOne(doc);
+                new Timer().schedule(new TimerTask() {
+                    @Override
+                    public void run() {
+                        MongoConnect.getReactionMessages().deleteOne(doc);
+                    }
+                }, 10000);
+                m.delete().queueAfter(5, TimeUnit.SECONDS);
+            });
         } catch (ScriptException e) {
             MessageEmbed embed = new EmbedBuilder()
                     .setTitle("<:redTick:438696459894784000> Error!")

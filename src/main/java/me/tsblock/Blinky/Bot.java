@@ -14,10 +14,7 @@ import me.tsblock.Blinky.Command.Economy.*;
 import me.tsblock.Blinky.Command.Fun.*;
 import me.tsblock.Blinky.Command.Moderation.pruneCommand;
 import me.tsblock.Blinky.Command.Moderation.randombanCommand;
-import me.tsblock.Blinky.Command.Tag.addCommand;
-import me.tsblock.Blinky.Command.Tag.removeCommand;
-import me.tsblock.Blinky.Command.Tag.tagCommand;
-import me.tsblock.Blinky.Command.Tag.transferCommand;
+import me.tsblock.Blinky.Command.Tag.*;
 import me.tsblock.Blinky.Database.MongoConnect;
 import me.tsblock.Blinky.Handler.CommandHandler;
 import me.tsblock.Blinky.Handler.EventHandler;
@@ -54,7 +51,7 @@ public class Bot {
             registerCommands();
             jda = new JDABuilder(AccountType.BOT)
                     .setToken(settings.getBotSecret())
-                    .setGame(Game.of(GameType.WATCHING, settings.getPrefix()))
+                    .setGame(Game.of(GameType.DEFAULT, settings.getPrefix() + "help"))
                     .addEventListener(new EventHandler())
                     .buildBlocking();
         } catch (LoginException | InterruptedException e) {
@@ -88,6 +85,7 @@ public class Bot {
         commandHandler.register(new insultCommand());
         commandHandler.register(new memeCommand());
         commandHandler.register(new urbanCommand());
+        commandHandler.register(new lovecalculatorCommand());
         //Moderation
         commandHandler.register(new randombanCommand());
         commandHandler.register(new pruneCommand());
@@ -96,5 +94,6 @@ public class Bot {
         commandHandler.register(new removeCommand());
         commandHandler.register(new tagCommand());
         commandHandler.register(new transferCommand());
+        commandHandler.register(new listtagCommand());
     }
 }
