@@ -1,8 +1,15 @@
+import net.nullschool.util.DigitalRandom;
+
+import java.util.Random;
+
 public class test {
     public static void main(String[] args) {
-        //this is me testing array, please ignore thank you
-        String example = ".ping cleverbutt";
-        String[] array = example.split(" ");
-        System.out.println(array[0].startsWith("t."));
+        for(int i=0;i<100;i++) {
+            System.out.println(randomNumber(5, 140));
+        }
+    }
+    public static int randomNumber(int min, int max) {
+        double Drandom = new DigitalRandom().nextDouble();
+        return (int) Math.floor(min + (max + 1 - min) * (Math.pow(Drandom, 6.5)));
     }
 }

@@ -88,7 +88,7 @@ public class pruneCommand extends Command {
             } else {
                 channel.getHistory().retrievePast(toDelete).queue((List<Message> retrieved) -> {
                     channel.deleteMessages(retrieved).queue();
-                    event.getChannel().sendMessage("Successfully deleted `" + toDelete + "` messages").queue(m -> m.delete().queueAfter(3, TimeUnit.SECONDS));
+                    event.getChannel().sendMessage("Successfully deleted `" + toDelete + "` messages").queue(m->m.delete().queueAfter(5, TimeUnit.SECONDS));
                 });
             }
         } catch (InsufficientPermissionException e) {

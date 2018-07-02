@@ -19,6 +19,7 @@ public class MongoConnect {
     private static MongoCollection UserLevels;
     private static MongoCollection ReactionMessages;
     private static MongoCollection Complaints;
+    private static MongoCollection Spinners;
     private static MongoCollection<Document> Tags;
 
 
@@ -30,6 +31,7 @@ public class MongoConnect {
         setTags(database.getCollection("Tags"));
         setComplaints(database.getCollection("Complaints"));
         setReactionMessages(database.getCollection("ReactionMessages"));
+        setSpinners(database.getCollection("Spinners"));
         System.out.println("Connected to database");
     }
 
@@ -121,6 +123,15 @@ public class MongoConnect {
     public static void setComplaints(MongoCollection complaints) {
         Complaints = complaints;
     }
+
+    public static MongoCollection getSpinners() {
+        return Spinners;
+    }
+
+    public static void setSpinners(MongoCollection spinners) {
+        Spinners = spinners;
+    }
+
     public static MongoCollection getReactionMessages() {
         return ReactionMessages;
     }

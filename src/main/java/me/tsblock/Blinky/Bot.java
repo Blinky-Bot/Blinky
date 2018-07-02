@@ -87,11 +87,12 @@ public class Bot {
         commandHandler.register(new memeCommand());
         commandHandler.register(new urbanCommand());
         commandHandler.register(new lovecalculatorCommand());
+        commandHandler.register(new fidgetspinnerCommand());
         //Moderation
         commandHandler.register(new randombanCommand());
         commandHandler.register(new pruneCommand());
         //Support
-        commandHandler.register(new complainCommand());
+        //commandHandler.register(new complainCommand());
         //Tags
         commandHandler.register(new addCommand());
         commandHandler.register(new removeCommand());

@@ -18,6 +18,7 @@ dependencies {
     compile 'com.google.code.gson:gson:2.8.5'
     compile 'org.mongodb:mongodb-driver:3.8.0'
     compile group: 'org.apache.commons', name: 'commons-lang3', version: '3.1'
+    compile group: 'net.nullschool', name: 'drnglib', version: '0.9.1'
 }
 compileJava.options.encoding = 'UTF-8'
 
