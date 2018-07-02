@@ -38,9 +38,9 @@ public class listtagCommand extends Command {
         MongoCollection<Document> tags = MongoConnect.getTags();
         List<Document> list = tags.find(new Document("id", user.getId())).into(new ArrayList<>());
         StringBuilder stringBuilder = new StringBuilder();
-        list.forEach(document -> stringBuilder.append(document.getString("name")));
+        list.forEach(document -> stringBuilder.append("`" + document.getString("name") + "`\n"));
         String result = stringBuilder.toString();
         if (list.isEmpty()) result = "None";
-        event.getChannel().sendMessage("```" + result + "```").queue();
+        event.getChannel().sendMessage(result).queue();
     }
 }

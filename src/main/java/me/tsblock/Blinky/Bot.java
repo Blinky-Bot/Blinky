@@ -14,6 +14,7 @@ import me.tsblock.Blinky.Command.Economy.*;
 import me.tsblock.Blinky.Command.Fun.*;
 import me.tsblock.Blinky.Command.Moderation.pruneCommand;
 import me.tsblock.Blinky.Command.Moderation.randombanCommand;
+import me.tsblock.Blinky.Command.Support.complainCommand;
 import me.tsblock.Blinky.Command.Tag.*;
 import me.tsblock.Blinky.Database.MongoConnect;
 import me.tsblock.Blinky.Handler.CommandHandler;
@@ -89,6 +90,8 @@ public class Bot {
         //Moderation
         commandHandler.register(new randombanCommand());
         commandHandler.register(new pruneCommand());
+        //Support
+        commandHandler.register(new complainCommand());
         //Tags
         commandHandler.register(new addCommand());
         commandHandler.register(new removeCommand());

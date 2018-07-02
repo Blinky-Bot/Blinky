@@ -13,13 +13,12 @@ import org.bson.conversions.Bson;
 
 public class MongoConnect {
     private Settings settings = SettingsManager.getInstance().getSettings();
-    private MongoDatabase database;
+    private static MongoDatabase database;
     private static MongoCollection GuildSettings;
     private static MongoCollection UserStats;
     private static MongoCollection UserLevels;
-
-
     private static MongoCollection ReactionMessages;
+    private static MongoCollection Complaints;
     private static MongoCollection<Document> Tags;
 
 
@@ -29,6 +28,7 @@ public class MongoConnect {
         setUserStats(database.getCollection("UserStats"));
         setUserLevels(database.getCollection("UserLevels"));
         setTags(database.getCollection("Tags"));
+        setComplaints(database.getCollection("Complaints"));
         setReactionMessages(database.getCollection("ReactionMessages"));
         System.out.println("Connected to database");
     }
@@ -81,6 +81,11 @@ public class MongoConnect {
         Tags.updateOne(new Document("name", name), operation);
     }
 
+    public static int getLength(String collectionName) {
+        Document stats = database.runCommand(new Document("collStats", collectionName));
+        return stats.getInteger("size");
+    }
+
 
     public static MongoCollection<Document> getUserStats() {
         return UserStats;
@@ -108,6 +113,13 @@ public class MongoConnect {
 
     public void setTags(MongoCollection tags) {
         Tags = tags;
+    }
+    public static MongoCollection getComplaints() {
+        return Complaints;
+    }
+
+    public static void setComplaints(MongoCollection complaints) {
+        Complaints = complaints;
     }
     public static MongoCollection getReactionMessages() {
         return ReactionMessages;
