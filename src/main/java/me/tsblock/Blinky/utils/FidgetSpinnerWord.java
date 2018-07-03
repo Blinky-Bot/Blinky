@@ -20,6 +20,11 @@ public class FidgetSpinnerWord {
             "spinner filled with gunpowder",
             "fidget cube",
             "",
-            "f̵̶͎͕͖͙͇̹̊̍i̷ͯͧ̓ḍ̛͛g̭͉̤͆͋͌͢ě̪t̸̼̻ͧ͟͢ ̷̷̸̻͈̙ͥ̉̑̚s̳̜͚p̬̬͖̭͓̐ͪ̑͐̍ḯ̡̓̓͌ͤn̥̺͖͕ͤ̓̈́͢n͓̭͈̗͕̔͐̌͂͞e̹̘͗r̢̫̈̉"
+            "f̵̶͎͕͖͙͇̹̊̍i̷ͯͧ̓ḍ̛͛g̭͉̤͆͋͌͢ě̪t̸̼̻ͧ͟͢ ̷̷̸̻͈̙ͥ̉̑̚s̳̜͚p̬̬͖̭͓̐ͪ̑͐̍ḯ̡̓̓͌ͤn̥̺͖͕ͤ̓̈́͢n͓̭͈̗͕̔͐̌͂͞e̹̘͗r̢̫̈̉",
+            "f",
+            "**E**",
+            "指尖陀螺",
+            "指\uD83C\uDD71陀螺",
+            "spun you your spun your spun yourself"
     };
 }

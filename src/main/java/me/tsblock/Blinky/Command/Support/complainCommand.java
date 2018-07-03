@@ -1,6 +1,7 @@
 package me.tsblock.Blinky.Command.Support;
 
 import com.mongodb.client.MongoCollection;
+import me.tsblock.Blinky.Bot;
 import me.tsblock.Blinky.Command.Command;
 import me.tsblock.Blinky.Database.MongoConnect;
 import net.dv8tion.jda.core.entities.Guild;
@@ -56,10 +57,20 @@ public class complainCommand extends Command {
     @Override
     public void onExecute(GuildMessageReceivedEvent event, Message msg, User user, Guild guild, String... args) {
         MongoCollection<Document> complaints = MongoConnect.getComplaints();
-        Document complaint = new Document("case", MongoConnect.getLength("Complaints"))
-                .append("serverID", guild.getId())
-                .append("userID", user.getId())
-                .append("message", String.join(" ", args));
-        complaints.insertOne(complaint);
+        StringBuilder stringBuilder = new StringBuilder()
+                .append("**Case #" + MongoConnect.getLength("Complaints") + "**")
+                .append("\n**From guild:** `" + guild.getName() + " (" + guild.getId() + ")`")
+                .append("\n**User: **`" + user.getName() + "#" + user.getDiscriminator() + " (" + user.getId() + ")`\n")
+                .append("**Message:**\n")
+                .append("```")
+                .append("\n" + String.join(" ", args))
+                .append("\n```");
+        Bot.getJDA().getGuildById("418382390113861633").getTextChannelsByName("compliants", true).get(0).sendMessage(stringBuilder.toString()).queue(m->{
+            Document complaint = new Document("case", MongoConnect.getLength("Complaints") + 1)
+                    .append("serverID", guild.getId())
+                    .append("userID", user.getId())
+                    .append("messageID", m.getId());
+            complaints.insertOne(complaint);
+        });
     }
 }

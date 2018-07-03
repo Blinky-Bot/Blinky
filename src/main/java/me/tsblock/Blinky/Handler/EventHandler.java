@@ -39,9 +39,7 @@ public class EventHandler extends ListenerAdapter {
 
     public void deleteEval(Document message, MessageReactionAddEvent event) {
         if (message.getString("messageID").equals(event.getMessageId()) && message.getString("userID").equals(event.getUser().getId()) && message.getString("type").equals("evalDelete") && message.getString("emote").equals("⛔")) {
-            event.getChannel().getMessageById(message.getString("messageID")).queue(m -> {
-                m.delete().queue();
-            });
+            event.getChannel().getMessageById(message.getString("messageID")).queue(m -> m.delete().queue());
         }
     }
 

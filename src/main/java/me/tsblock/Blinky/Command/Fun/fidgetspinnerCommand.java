@@ -5,6 +5,7 @@ import me.tsblock.Blinky.Command.Command;
 import me.tsblock.Blinky.Database.MongoConnect;
 import me.tsblock.Blinky.utils.CustomEmotes;
 import me.tsblock.Blinky.utils.FidgetSpinnerWord;
+import me.tsblock.Blinky.utils.Utils;
 import net.dv8tion.jda.core.entities.Guild;
 import net.dv8tion.jda.core.entities.Message;
 import net.dv8tion.jda.core.entities.User;
@@ -40,9 +41,9 @@ public class fidgetspinnerCommand extends Command {
         MongoCollection<Document> spinner = MongoConnect.getSpinners();
         Document found = spinner.find(new Document("userID", user.getId())).first();
         if (found == null) {
-            int seconds = randomNumber(5, 140);
+            int seconds = Utils.randomNumber(5, 140);
             spinner.insertOne(new Document("userID", user.getId()));
-            event.getChannel().sendMessage(CustomEmotes.spinner + "You spun your " + FidgetSpinnerWord.words[new Random().nextInt(FidgetSpinnerWord.words.length)] + "! Let's see how long does it spin... ").queue(m-> {
+            event.getChannel().sendMessage(CustomEmotes.spinner + "You spun your " + FidgetSpinnerWord.words[new Random().nextInt(FidgetSpinnerWord.words.length)] + "! Let's see how long does it spin... " + seconds).queue(m-> {
                 new Timer().schedule(new TimerTask() {
                     @Override
                     public void run() {
@@ -56,9 +57,5 @@ public class fidgetspinnerCommand extends Command {
         }
     }
 
-    public int randomNumber(int min, int max) {
-        int random = new DigitalRandom().nextInt();
-        double Drandom = new DigitalRandom().nextDouble();
-        return (int) Math.floor(min + (max + 1 - min) * (Math.pow(Drandom, 7.1)));
-    }
+
 }

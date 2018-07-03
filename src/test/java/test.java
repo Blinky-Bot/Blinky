@@ -9,7 +9,7 @@ public class test {
         }
     }
     public static int randomNumber(int min, int max) {
-        double Drandom = new DigitalRandom().nextDouble();
-        return (int) Math.floor(min + (max + 1 - min) * (Math.pow(Drandom, 6.5)));
+        Random random = new Random();
+        return (int) Math.abs(random.nextInt(5) - random.nextInt(140));
     }
 }

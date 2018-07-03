@@ -1,5 +1,6 @@
 package me.tsblock.Blinky.Database;
 
+import com.mongodb.Block;
 import com.mongodb.MongoClient;
 import com.mongodb.MongoClientURI;
 import com.mongodb.Tag;
@@ -27,12 +28,20 @@ public class MongoConnect {
         MongoClient client = new MongoClient(new MongoClientURI(settings.getDataBaseURL()));
         setDatabase(client.getDatabase("plexio"));
         setUserStats(database.getCollection("UserStats"));
-        setUserLevels(database.getCollection("UserLevels"));
+        setUserLevels(database.getCollection("UserLevelsTwo"));
         setTags(database.getCollection("Tags"));
         setComplaints(database.getCollection("Complaints"));
         setReactionMessages(database.getCollection("ReactionMessages"));
         setSpinners(database.getCollection("Spinners"));
+        resetCollection();
         System.out.println("Connected to database");
+    }
+
+    public static void resetCollection() {
+        Spinners.deleteMany(new Document());
+        Bson filter = new Document("blocked", true);
+        Bson uOperation = new Document("$set", new Document("blocked", false));
+        UserLevels.updateMany(filter, uOperation);
     }
 
     public static void initUserStats(String id) {
@@ -48,6 +57,7 @@ public class MongoConnect {
         doc.append("xp", 0);
         doc.append("level", 1);
         doc.append("maxLevel", false);
+        doc.append("blocked", false);
         doc.append("guildID", GuildID);
         UserLevels.insertOne(doc);
     }
@@ -85,7 +95,7 @@ public class MongoConnect {
 
     public static int getLength(String collectionName) {
         Document stats = database.runCommand(new Document("collStats", collectionName));
-        return stats.getInteger("size");
+        return stats.getInteger("count");
     }
 
 

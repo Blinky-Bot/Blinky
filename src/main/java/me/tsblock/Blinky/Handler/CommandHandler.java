@@ -103,14 +103,11 @@ public class CommandHandler {
     private void handleXP(GuildMessageReceivedEvent e) {
         if (e.getAuthor().isBot()) return;
         Random random = new Random();
-        int xp = random.nextInt(10) + 1;
-        String id = e.getAuthor().getId();
+        int xp = random.nextInt(15) + 5;
         MongoCollection<Document> userdoc = MongoConnect.getUserLevels();
-        Document toFind = new Document("id", id);
-        toFind.append("guildID", e.getGuild().getId());
-        Document found = userdoc.find(toFind).first();
+        Document found = userdoc.find(new Document("id", e.getAuthor().getId()).append("guildID", e.getGuild().getId())).first();
         if (found == null) {
-            MongoConnect.initLevel(id, e.getGuild().getId());
+            MongoConnect.initLevel(e.getAuthor().getId(), e.getGuild().getId());
         } else {
             int currentXP = found.getInteger("xp");
             int newXP = currentXP + xp;
@@ -121,7 +118,7 @@ public class CommandHandler {
                 if (nextlvl == 100) {
                     MessageEmbed maxlevel = new EmbedBuilder()
                             .setTitle("\uD83C\uDF89")
-                            .setDescription("Congratulation! You have reached to level 100!")
+                            .setDescription("**Congratulation! You have reached to level 100!**")
                             .setColor(Color.YELLOW)
                             .build();
                     e.getChannel().sendMessage(maxlevel).queue();
@@ -130,23 +127,33 @@ public class CommandHandler {
                             .append("xp", 0);
                     Bson operation = new Document("$set", updateflfl);
                     userdoc.updateOne(found, operation);
-                    return;
-                }
-                Bson updateLevel = new Document("level", nextlvl)
+                } else {
+                    Bson updateLevel = new Document("level", nextlvl)
                         .append("xp", 0);
-                Bson updateOperation = new Document("$set", updateLevel);
-                userdoc.updateOne(found, updateOperation);
-                MessageEmbed levelup = new EmbedBuilder()
-                        .setAuthor("Level Up!", null, "https://i.imgur.com/RLun06c.png")
-                        .setDescription("New Level: " + nextlvl)
-                        .setFooter(e.getAuthor().getName() + e.getAuthor().getDiscriminator(), null)
-                        .build();
-                e.getChannel().sendMessage(levelup).queue();
-                return;
+                    Bson updateOperation = new Document("$set", updateLevel);
+                    userdoc.updateOne(found, updateOperation);
+                    MessageEmbed levelup = new EmbedBuilder()
+                            .setAuthor("Level Up!", null, "https://i.imgur.com/RLun06c.png")
+                            .setDescription("New Level: " + nextlvl)
+                            .setFooter(e.getAuthor().getName() + "#" + e.getAuthor().getDiscriminator(), e.getAuthor().getAvatarUrl())
+                            .build();
+                    e.getChannel().sendMessage(levelup).queue();
+                }
             }
-            Bson updateXp = new Document("xp", newXP);
-            Bson update = new Document("$set", updateXp);
-            userdoc.updateOne(found, update);
+            if (!found.getBoolean("blocked")) {
+                Bson updateXp = new Document("xp", newXP)
+                        .append("blocked", true);
+                Bson update = new Document("$set", updateXp);
+                userdoc.updateOne(found, update);
+                new Timer().schedule(new TimerTask() {
+                @Override
+                    public void run() {
+                        Bson updatcc = new Document("blocked", false);
+                        Bson update = new Document("$set", updatcc);
+                        userdoc.updateOne(found, update);
+                    }
+                }, 60000);
+            }
         }
     }
 
