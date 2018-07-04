@@ -71,6 +71,7 @@ public class complainCommand extends Command {
                     .append("userID", user.getId())
                     .append("messageID", m.getId());
             complaints.insertOne(complaint);
+            event.getChannel().sendMessage("Sent complain").queue();
         });
     }
 }
