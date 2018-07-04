@@ -41,7 +41,7 @@ public class complainCommand extends Command {
 
     @Override
     public boolean ownerOnly() {
-        return true;
+        return false;
     }
 
     @Override

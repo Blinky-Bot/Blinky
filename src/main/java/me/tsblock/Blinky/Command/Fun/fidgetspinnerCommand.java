@@ -43,7 +43,7 @@ public class fidgetspinnerCommand extends Command {
         if (found == null) {
             int seconds = Utils.randomNumber(5, 140);
             spinner.insertOne(new Document("userID", user.getId()));
-            event.getChannel().sendMessage(CustomEmotes.spinner + "You spun your " + FidgetSpinnerWord.words[new Random().nextInt(FidgetSpinnerWord.words.length)] + "! Let's see how long does it spin... " + seconds).queue(m-> {
+            event.getChannel().sendMessage(CustomEmotes.spinner + "You spun your " + FidgetSpinnerWord.words[new Random().nextInt(FidgetSpinnerWord.words.length)] + "! Let's see how long does it spin... ").queue(m-> {
                 new Timer().schedule(new TimerTask() {
                     @Override
                     public void run() {
