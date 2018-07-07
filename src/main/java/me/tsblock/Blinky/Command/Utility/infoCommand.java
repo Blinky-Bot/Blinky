@@ -45,7 +45,7 @@ public class infoCommand extends Command {
                 .append("**Channels: **`" + channels + "`");
         StringBuilder versions = new StringBuilder()
                 .append("**Java:** `" + jvm_version + "`\n")
-                .append("**JDA:** `" + jda_version + "`\n");
+                .append("**JDA:** `" + jda_version + "`\n")
                 .append("**MongoDB Driver:** `" + mongodb_version + "`");
         MessageEmbed info = new EmbedBuilder()
                 .setAuthor(jda.getSelfUser().getName(), jda.getSelfUser().getAvatarUrl())
