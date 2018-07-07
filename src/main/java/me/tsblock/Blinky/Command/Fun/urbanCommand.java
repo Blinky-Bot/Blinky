@@ -49,7 +49,7 @@ public class urbanCommand extends Command {
     @Override
     public void onExecute(GuildMessageReceivedEvent event, Message msg, User user, Guild guild, String... args) {
         try {
-            JSONObject urban = GetBody.getDefine(String.join(",", args));
+            JSONObject urban = GetBody.getDefine(String.join(" ", args));
             JSONArray list = urban.getJSONArray("list");
             if (list.isNull(0)) {
                 event.getChannel().sendMessage("Definition not found!").queue();
@@ -65,7 +65,7 @@ public class urbanCommand extends Command {
                     .setTitle(word, icantunderstand.getString("permalink"))
                     .addField("Definition", definition, false)
                     .addField("Example", example, false)
-                    .setFooter(thumbsup + "\uD83D\uDC4D" + " | " + thumbsdown + "\uD83D\uDC4E" + " | " + "1 / " + icantunderstand.length() + " | Menu will be deactivated after 1 minute.", null)
+                    .setFooter(thumbsup + "\uD83D\uDC4D" + " | " + thumbsdown + "\uD83D\uDC4E" + " | " + "1 / " + list.length() + " | Menu will be deactivated after 1 minute.", null)
                     .setColor(Color.ORANGE);
             event.getChannel().sendMessage(urbane.build()).queue(m->{
                 MongoCollection<Document> messages = MongoConnect.getReactionMessages();
@@ -84,7 +84,6 @@ public class urbanCommand extends Command {
                         messages.deleteOne(doc);
                         event.getChannel().removeReactionById(m.getId(), "◀").queue();
                         event.getChannel().removeReactionById(m.getId(), "▶").queue();
-                        m.addReaction("❌").queue();
                     }
                 }, 60000);
             });

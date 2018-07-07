@@ -9,7 +9,8 @@ import me.tsblock.Blinky.Command.Administrator.shutdownCommand;
 import me.tsblock.Blinky.Command.Core.helpCommand;
 import me.tsblock.Blinky.Command.Core.levelCommand;
 import me.tsblock.Blinky.Command.Core.pingCommand;
-import me.tsblock.Blinky.Command.Core.uptimeCommand;
+import me.tsblock.Blinky.Command.Utility.infoCommand;
+import me.tsblock.Blinky.Command.Utility.uptimeCommand;
 import me.tsblock.Blinky.Command.Economy.*;
 import me.tsblock.Blinky.Command.Fun.*;
 import me.tsblock.Blinky.Command.Moderation.pruneCommand;
@@ -37,7 +38,7 @@ public class Bot {
             .getLogger(Logger.ROOT_LOGGER_NAME);
 
     static {
-        root.setLevel(Level.ERROR);
+        root.setLevel(Level.WARN);
     }
 
     private static CommandHandler commandHandler = new CommandHandler();
@@ -72,7 +73,6 @@ public class Bot {
         commandHandler.register(new helpCommand());
         commandHandler.register(new levelCommand());
         commandHandler.register(new pingCommand());
-        commandHandler.register(new uptimeCommand());
         //Economy
         commandHandler.register(new balanceCommand());
         commandHandler.register(new dailyCommand());
@@ -101,5 +101,8 @@ public class Bot {
         commandHandler.register(new tagCommand());
         commandHandler.register(new transferCommand());
         commandHandler.register(new listtagCommand());
+        //Utility
+        commandHandler.register(new infoCommand());
+        commandHandler.register(new uptimeCommand());
     }
 }

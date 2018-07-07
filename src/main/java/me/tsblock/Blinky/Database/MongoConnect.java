@@ -28,7 +28,7 @@ public class MongoConnect {
         MongoClient client = new MongoClient(new MongoClientURI(settings.getDataBaseURL()));
         setDatabase(client.getDatabase("plexio"));
         setUserStats(database.getCollection("UserStats"));
-        setUserLevels(database.getCollection("UserLevelsTwo"));
+        setUserLevels(database.getCollection("UserLevels"));
         setTags(database.getCollection("Tags"));
         setComplaints(database.getCollection("Complaints"));
         setReactionMessages(database.getCollection("ReactionMessages"));
@@ -46,7 +46,7 @@ public class MongoConnect {
 
     public static void initUserStats(String id) {
         Document document = new Document("id", id);
-        document.append("balance", 300L);
+        document.append("balance", "300");
         document.append("lastDaily", "");
         document.append("donor", false);
         UserStats.insertOne(document);

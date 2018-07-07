@@ -91,11 +91,7 @@ public class CommandHandler {
                             }
                         }
                     }
-                    try {
-                        cmd.onExecute(event, event.getMessage(), event.getAuthor(), event.getGuild(), args);
-                    } catch (Error err) {
-                        err.printStackTrace();
-                    }
+                    cmd.onExecute(event, event.getMessage(), event.getAuthor(), event.getGuild(), args);
                 }
             });
         });

@@ -23,7 +23,11 @@ public class EventHandler extends ListenerAdapter {
     static MongoCollection<Document> messages = MongoConnect.getReactionMessages();
     @Override
     public void onGuildMessageReceived(GuildMessageReceivedEvent event) {
-        Bot.getCommandHandler().handle(event);
+        try {
+            Bot.getCommandHandler().handle(event);
+        } catch (Error err) {
+            event.getChannel().sendMessage("Looks like something wrong happened! Send the error message to owner, and inform what did you do\n" + err.getMessage()).queue();
+        }
     }
 
     @Override
