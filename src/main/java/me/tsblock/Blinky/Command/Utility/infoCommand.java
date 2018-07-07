@@ -36,8 +36,8 @@ public class infoCommand extends Command {
         long users = jda.getUsers().size();
         long channels = jda.getTextChannels().size() + jda.getVoiceChannels().size();
         String jvm_version = System.getProperty("java.version");
-        String jda_version = jda.getClass().getPackage().getImplementationVersion();
-        //String mongodb_version; //broke lmafo
+        String jda_version = "3.6.0_376";
+        String mongodb_version = "3.8.0";
 
         StringBuilder statistics = new StringBuilder()
                 .append("**Guilds: ** `" + guilds + "`\n")
@@ -46,7 +46,7 @@ public class infoCommand extends Command {
         StringBuilder versions = new StringBuilder()
                 .append("**Java:** `" + jvm_version + "`\n")
                 .append("**JDA:** `" + jda_version + "`\n");
-                //.append("**MongoDB Driver:** `" + mongodb_version + "`");
+                .append("**MongoDB Driver:** `" + mongodb_version + "`");
         MessageEmbed info = new EmbedBuilder()
                 .setAuthor(jda.getSelfUser().getName(), jda.getSelfUser().getAvatarUrl())
                 .setDescription("**A general-purpose Discord bot, written in Java using JDA.**")
