@@ -1,4 +1,4 @@
-package me.tsblock.Blinky.Command.Core;
+package me.tsblock.Blinky.Command.Leveling;
 
 import com.mongodb.client.MongoCollection;
 import me.tsblock.Blinky.Command.Command;

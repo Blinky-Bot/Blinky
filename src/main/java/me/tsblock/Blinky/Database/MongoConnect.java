@@ -39,6 +39,7 @@ public class MongoConnect {
 
     public static void resetCollection() {
         Spinners.deleteMany(new Document());
+        ReactionMessages.deleteMany(new Document());
         Bson filter = new Document("blocked", true);
         Bson uOperation = new Document("$set", new Document("blocked", false));
         UserLevels.updateMany(filter, uOperation);

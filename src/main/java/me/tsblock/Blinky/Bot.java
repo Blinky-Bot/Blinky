@@ -7,8 +7,9 @@ import me.tsblock.Blinky.Command.Administrator.forceCreateWalletCommand;
 import me.tsblock.Blinky.Command.Administrator.sayCommand;
 import me.tsblock.Blinky.Command.Administrator.shutdownCommand;
 import me.tsblock.Blinky.Command.Core.helpCommand;
-import me.tsblock.Blinky.Command.Core.levelCommand;
+import me.tsblock.Blinky.Command.Leveling.levelCommand;
 import me.tsblock.Blinky.Command.Core.pingCommand;
+import me.tsblock.Blinky.Command.Utility.calcCommand;
 import me.tsblock.Blinky.Command.Utility.infoCommand;
 import me.tsblock.Blinky.Command.Utility.uptimeCommand;
 import me.tsblock.Blinky.Command.Economy.*;
@@ -84,7 +85,7 @@ public class Bot {
         //commandHandler.register(new catCommand()); //disabled because api is unavailable
         commandHandler.register(new dadjokesCommand());
         commandHandler.register(new eightballCommand());
-        commandHandler.register(new insultCommand());
+        //commandHandler.register(new insultCommand()); //it's a bit of nsfw
         commandHandler.register(new memeCommand());
         commandHandler.register(new urbanCommand());
         commandHandler.register(new lovecalculatorCommand());
@@ -104,5 +105,6 @@ public class Bot {
         //Utility
         commandHandler.register(new infoCommand());
         commandHandler.register(new uptimeCommand());
+        commandHandler.register(new calcCommand());
     }
 }

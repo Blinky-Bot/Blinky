@@ -1,33 +1,27 @@
-package me.tsblock.Blinky.Command.Core;
+package me.tsblock.Blinky.Command.Utility;
 
 import me.tsblock.Blinky.Command.Command;
 import net.dv8tion.jda.core.entities.Guild;
 import net.dv8tion.jda.core.entities.Message;
 import net.dv8tion.jda.core.entities.User;
 import net.dv8tion.jda.core.events.message.guild.GuildMessageReceivedEvent;
+import net.objecthunter.exp4j.Expression;
+import net.objecthunter.exp4j.ExpressionBuilder;
 
-import java.util.Arrays;
-import java.util.List;
-
-public class settingsCommand extends Command {
+public class calcCommand extends Command {
     @Override
     public String getName() {
-        return "settings";
+        return "calc";
     }
 
     @Override
     public String getDescription() {
-        return "Change settings for server you currently in.";
+        return "Evaluate maths expressions";
     }
 
     @Override
     public String getUsage() {
-        return "<key> <value> \n";
-    }
-
-    @Override
-    public List<String> getAliases() {
-        return Arrays.asList("config", "cfg");
+        return "<expressions>";
     }
 
     @Override
@@ -42,6 +36,12 @@ public class settingsCommand extends Command {
 
     @Override
     public void onExecute(GuildMessageReceivedEvent event, Message msg, User user, Guild guild, String... args) {
-
+        String expression = String.join(" ", args);
+        try {
+            Expression e = new ExpressionBuilder(expression).build();
+            event.getChannel().sendMessage("```" + e.evaluate() + "```").queue();
+        } catch (IllegalArgumentException e) {
+            event.getChannel().sendMessage("```" + e.getMessage() + "```").queue();
+        }
     }
 }
