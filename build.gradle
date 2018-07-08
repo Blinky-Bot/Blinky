@@ -24,7 +24,7 @@ dependencies {
 compileJava.options.encoding = 'UTF-8'
 
 group 'me.tsblock'
-version '0.0.2-PRE-ALPHA'
+version '0.0.3-PRE-ALPHA'
 
 mainClassName = 'me.tsblock.Blinky.Bot'
 
