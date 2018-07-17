@@ -15,15 +15,15 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-public class kickCommand extends Command {
+public class banCommand extends Command {
     @Override
     public String getName() {
-        return "kick";
+        return "ban";
     }
 
     @Override
     public String getDescription() {
-        return "Kick a member";
+        return "ban a member";
     }
 
     @Override
@@ -65,16 +65,16 @@ public class kickCommand extends Command {
             return;
         }
 
-        if(!event.getMember().hasPermission(Permission.KICK_MEMBERS) || !event.getMember().canInteract(target)){
-            Embed.sendEmbed(CustomEmotes.cross + " You do not have permission to kick this member", event.getChannel());
+        if(!event.getMember().hasPermission(Permission.BAN_MEMBERS) || !event.getMember().canInteract(target)){
+            Embed.sendEmbed(CustomEmotes.cross + " You do not have permission to ban this member", event.getChannel());
             return;
         }
 
         String reason = String.join(" ", Arrays.copyOfRange(args, 1, args.length));
 
-        controller.kick(target, reason.isEmpty() ? "No reason provided" : reason).queue(
-                success -> Embed.sendEmbed(CustomEmotes.tick + " **Successfully kicked " + target.getUser().getName() + "#" + target.getUser().getDiscriminator() + ".**", event.getChannel()),
-                fail -> Embed.sendEmbed(CustomEmotes.cross + " **Unable to kick " + target.getUser().getName() + "#" + target.getUser().getDiscriminator() + ".**", event.getChannel())
+        controller.ban(target, 0, reason.isEmpty() ? "No reason provided" : reason).queue(
+                success -> Embed.sendEmbed(CustomEmotes.tick + " **Successfully banned " + target.getUser().getName() + "#" + target.getUser().getDiscriminator() + ".**", event.getChannel()),
+                fail -> Embed.sendEmbed(CustomEmotes.cross + " **Unable to ban " + target.getUser().getName() + "#" + target.getUser().getDiscriminator() + ".**", event.getChannel())
         );
     }
 }

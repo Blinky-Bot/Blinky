@@ -4,6 +4,7 @@ import me.tsblock.Blinky.Bot;
 import me.tsblock.Blinky.Command.Command;
 import me.tsblock.Blinky.Settings.Settings;
 import me.tsblock.Blinky.Settings.SettingsManager;
+import me.tsblock.Blinky.utils.CustomEmotes;
 import net.dv8tion.jda.core.EmbedBuilder;
 import net.dv8tion.jda.core.entities.Guild;
 import net.dv8tion.jda.core.entities.Message;
@@ -89,6 +90,10 @@ public class helpCommand extends Command {
                 b.addField(cat, line.toString(), true)
                         .setFooter("", null);
         });
-        event.getChannel().sendMessage(b.build()).queue();
+        event.getAuthor().openPrivateChannel().queue(c-> {
+            c.sendMessage(b.build()).queue(s-> event.getChannel().sendMessage("\uD83D\uDCE3 ***Sent to DM!***").queue(), err->{
+                event.getChannel().sendMessage(CustomEmotes.cross + " **Cannot send DMs to you! Did you disable your DMs?**").queue();
+            });
+        });
     }
 }

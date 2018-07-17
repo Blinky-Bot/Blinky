@@ -39,6 +39,11 @@ public class evalCommand extends Command {
     }
 
     @Override
+    public boolean needArgs() {
+        return true;
+    }
+
+    @Override
     public boolean enabled() {
         return true;
     }
@@ -68,13 +73,6 @@ public class evalCommand extends Command {
                         .append("userID", user.getId())
                         .append("type", "evalDelete");
                 ReactionMessages.insertOne(doc);
-                new Timer().schedule(new TimerTask() {
-                    @Override
-                    public void run() {
-                        MongoConnect.getReactionMessages().deleteOne(doc);
-                    }
-                }, 10000);
-                m.delete().queueAfter(5, TimeUnit.SECONDS);
             });
         } catch (ScriptException e) {
             MessageEmbed embed = new EmbedBuilder()

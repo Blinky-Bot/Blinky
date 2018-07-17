@@ -6,6 +6,8 @@ import me.tsblock.Blinky.Bot;
 import me.tsblock.Blinky.Database.MongoConnect;
 import net.dv8tion.jda.core.EmbedBuilder;
 import net.dv8tion.jda.core.entities.MessageEmbed;
+import net.dv8tion.jda.core.events.guild.GuildJoinEvent;
+import net.dv8tion.jda.core.events.guild.GuildLeaveEvent;
 import net.dv8tion.jda.core.events.message.guild.GuildMessageReceivedEvent;
 import net.dv8tion.jda.core.events.message.react.MessageReactionAddEvent;
 import net.dv8tion.jda.core.hooks.ListenerAdapter;
@@ -41,9 +43,24 @@ public class EventHandler extends ListenerAdapter {
         }
     }
 
+    @Override
+    public void onGuildJoin(GuildJoinEvent event) {
+        MongoConnect.initGuildSettings(event.getGuild().getId());
+    }
+
+    @Override
+    public void onGuildLeave(GuildLeaveEvent event) {
+        MongoCollection<Document> guildSettings = MongoConnect.getGuildSettings();
+        Document found = guildSettings.find(new Document("id", event.getGuild().getId())).first();
+        if (found != null) {
+            guildSettings.deleteOne(found);
+        }
+    }
+
     public void deleteEval(Document message, MessageReactionAddEvent event) {
         if (message.getString("messageID").equals(event.getMessageId()) && message.getString("userID").equals(event.getUser().getId()) && message.getString("type").equals("evalDelete") && message.getString("emote").equals("⛔")) {
             event.getChannel().getMessageById(message.getString("messageID")).queue(m -> m.delete().queue());
+            messages.deleteOne(message);
         }
     }
 

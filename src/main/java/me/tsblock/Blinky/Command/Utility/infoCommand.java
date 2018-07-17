@@ -57,7 +57,9 @@ public class infoCommand extends Command {
         StringBuilder system = new StringBuilder()
                 .append("**Process CPU Usage:** `" + processCpuLoad + "%`\n")
                 .append("**System CPU Usage:** `" + systemCpuLoad + "%`\n")
-                .append("**Memory Usage:** `" + freeMemory + "mb / " + allocatedMemory + "mb`");
+                .append("**CPU Name:** `" + System.getenv("PROCESSOR_IDENTIFIER") + " (" + System.getenv("NUMBER_OF_PROCESSORS") + " cores)`\n")
+                .append("**Memory Usage:** `" + freeMemory + "mb / " + allocatedMemory + "mb`\n")
+                .append("**OS Name:** `" + System.getProperty("os.name") + " (" + System.getProperty("os.version") + ")`\n");
         MessageEmbed info = new EmbedBuilder()
                 .setAuthor(jda.getSelfUser().getName(), jda.getSelfUser().getAvatarUrl())
                 .setDescription("**A general-purpose Discord bot, written in Java using JDA.**")

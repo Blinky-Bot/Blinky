@@ -7,8 +7,11 @@ import me.tsblock.Blinky.Command.Administrator.forceCreateWalletCommand;
 import me.tsblock.Blinky.Command.Administrator.sayCommand;
 import me.tsblock.Blinky.Command.Administrator.shutdownCommand;
 import me.tsblock.Blinky.Command.Core.helpCommand;
+import me.tsblock.Blinky.Command.Core.settingsCommand;
 import me.tsblock.Blinky.Command.Leveling.levelCommand;
 import me.tsblock.Blinky.Command.Core.pingCommand;
+import me.tsblock.Blinky.Command.Moderation.banCommand;
+import me.tsblock.Blinky.Command.Moderation.kickCommand;
 import me.tsblock.Blinky.Command.Utility.calcCommand;
 import me.tsblock.Blinky.Command.Utility.infoCommand;
 import me.tsblock.Blinky.Command.Utility.uptimeCommand;
@@ -22,6 +25,7 @@ import me.tsblock.Blinky.Command.Tag.*;
 import me.tsblock.Blinky.Database.MongoConnect;
 import me.tsblock.Blinky.Handler.CommandHandler;
 import me.tsblock.Blinky.Handler.EventHandler;
+import me.tsblock.Blinky.Handler.StarboardHandler;
 import me.tsblock.Blinky.Settings.Settings;
 import me.tsblock.Blinky.Settings.SettingsManager;
 import net.dv8tion.jda.core.AccountType;
@@ -57,6 +61,7 @@ public class Bot {
                     .setToken(settings.getBotSecret())
                     .setGame(Game.of(GameType.DEFAULT, settings.getPrefix() + "help"))
                     .addEventListener(new EventHandler())
+                    .addEventListener(new StarboardHandler())
                     .buildBlocking();
         } catch (LoginException | InterruptedException e) {
             e.printStackTrace();
@@ -72,8 +77,8 @@ public class Bot {
         commandHandler.register(new shutdownCommand());
         //Core
         commandHandler.register(new helpCommand());
-        commandHandler.register(new levelCommand());
         commandHandler.register(new pingCommand());
+        commandHandler.register(new settingsCommand());
         //Economy
         commandHandler.register(new balanceCommand());
         commandHandler.register(new dailyCommand());
@@ -90,7 +95,11 @@ public class Bot {
         commandHandler.register(new urbanCommand());
         commandHandler.register(new lovecalculatorCommand());
         commandHandler.register(new fidgetspinnerCommand());
+        //Leveling
+        //commandHandler.register(new levelCommand());
         //Moderation
+        commandHandler.register(new banCommand());
+        commandHandler.register(new kickCommand());
         commandHandler.register(new randombanCommand());
         commandHandler.register(new pruneCommand());
         //Support

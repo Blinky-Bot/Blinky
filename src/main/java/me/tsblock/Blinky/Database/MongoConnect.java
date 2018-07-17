@@ -11,28 +11,32 @@ import me.tsblock.Blinky.Settings.SettingsManager;
 import net.dv8tion.jda.core.entities.Message;
 import org.bson.Document;
 import org.bson.conversions.Bson;
+import org.json.JSONArray;
 
 public class MongoConnect {
-    private Settings settings = SettingsManager.getInstance().getSettings();
+    private static Settings settings = SettingsManager.getInstance().getSettings();
     private static MongoDatabase database;
-    private static MongoCollection GuildSettings;
-    private static MongoCollection UserStats;
-    private static MongoCollection UserLevels;
-    private static MongoCollection ReactionMessages;
-    private static MongoCollection Complaints;
-    private static MongoCollection Spinners;
+    private static MongoCollection<Document> GuildSettings;
+    private static MongoCollection<Document> UserStats;
+    private static MongoCollection<Document> UserLevels;
+    private static MongoCollection<Document> ReactionMessages;
+    private static MongoCollection<Document> Complaints;
+    private static MongoCollection<Document> Spinners;
+    private static MongoCollection<Document> Starboard;
     private static MongoCollection<Document> Tags;
 
 
     public void connect() {
         MongoClient client = new MongoClient(new MongoClientURI(settings.getDataBaseURL()));
-        setDatabase(client.getDatabase("plexio"));
+        setDatabase(client.getDatabase("blinky"));
         setUserStats(database.getCollection("UserStats"));
         setUserLevels(database.getCollection("UserLevels"));
         setTags(database.getCollection("Tags"));
         setComplaints(database.getCollection("Complaints"));
         setReactionMessages(database.getCollection("ReactionMessages"));
         setSpinners(database.getCollection("Spinners"));
+        setStarboard(database.getCollection("Starboard"));
+        setGuildSettings(database.getCollection("GuildSettings"));
         resetCollection();
         System.out.println("Connected to database");
     }
@@ -63,14 +67,22 @@ public class MongoConnect {
         UserLevels.insertOne(doc);
     }
 
+    public static void initGuildSettings(String id) {
+        Document doc = new Document("id", id)
+                .append("prefix", settings.getPrefix())
+                .append("welcomeChannel", null)
+                .append("joinMessage", null)
+                .append("leaveMessage", null)
+                .append("autoRole", null)
+                .append("starboard", null)
+                .append("starboardRoles", new JSONArray());
+        GuildSettings.insertOne(doc);
+    }
+
     public static void updateDocument(Document document, MongoCollection<Document> collection, String key, Object value) {
         Document found = collection.find(document).first();
-        if (found != null) {
-            Bson operation = new Document("$set", new Document(key, value));
-            collection.updateOne(found, operation);
-        } else {
-            throw new NullPointerException();
-        }
+        Bson operation = new Document("$set", new Document(key, value));
+        collection.updateOne(found, operation);
     }
 
     public static void addTag(String name, String content, String id) {
@@ -120,7 +132,7 @@ public class MongoConnect {
         this.database = database;
     }
 
-    public static MongoCollection getTags() {
+    public static MongoCollection<Document> getTags() {
         return Tags;
     }
 
@@ -135,7 +147,7 @@ public class MongoConnect {
         Complaints = complaints;
     }
 
-    public static MongoCollection getSpinners() {
+    public static MongoCollection<Document> getSpinners() {
         return Spinners;
     }
 
@@ -143,11 +155,27 @@ public class MongoConnect {
         Spinners = spinners;
     }
 
-    public static MongoCollection getReactionMessages() {
+    public static MongoCollection<Document> getReactionMessages() {
         return ReactionMessages;
     }
 
     public static void setReactionMessages(MongoCollection reactionMessages) {
         ReactionMessages = reactionMessages;
+    }
+
+    public static MongoCollection<Document> getStarboard() {
+        return Starboard;
+    }
+
+    public static void setStarboard(MongoCollection starboard) {
+        Starboard = starboard;
+    }
+
+    public static MongoCollection<Document> getGuildSettings() {
+        return GuildSettings;
+    }
+
+    public static void setGuildSettings(MongoCollection guildSettings) {
+        GuildSettings = guildSettings;
     }
 }

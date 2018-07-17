@@ -27,9 +27,8 @@ public class CommandHandler {
     private String[] notReplacedArgs;
     private Settings settings = SettingsManager.getInstance().getSettings();
     private Embed embed = new Embed();
-    private String prefix = settings.getPrefix();
-    private CustomEmotes emotes = new CustomEmotes();
     private Map<Command, Map<User, Date>> cooldownList = new HashMap<>();
+    private String prefix = settings.getPrefix();
     public List<Command> getRegisteredCommands() {
         return registeredCmds;
     }
@@ -37,7 +36,11 @@ public class CommandHandler {
         registeredCmds.add(cmd);
     }
     public void handle(GuildMessageReceivedEvent event) {
-        if (!event.getMessage().getContentRaw().startsWith(prefix)) handleXP(event);
+        //if (!event.getMessage().getContentRaw().startsWith(prefix)) handleXP(event);
+        MongoCollection<Document> guildSettings = MongoConnect.getGuildSettings();
+        Document found = guildSettings.find(new Document("id", event.getGuild().getId())).first();
+        if (found != null)
+            if (!found.getString("prefix").isEmpty()) prefix = found.getString("prefix");
         if (!event.getMessage().getContentRaw().startsWith(prefix) || !event.getMessage().getType().equals(MessageType.DEFAULT) || event.getAuthor().isBot()) return;
         String[] notReplacedArgs = event.getMessage().getContentRaw().replaceFirst(prefix, "").split(" ");
         registeredCmds.forEach(cmd -> {
@@ -49,16 +52,16 @@ public class CommandHandler {
                     String[] args = Arrays.copyOfRange(notReplacedArgs, 1, notReplacedArgs.length);
                     args = StringUtils.stripAll(args); //trim all the space
                     if(cmd.ownerOnly() && !event.getAuthor().getId().equals(settings.getOwnerID())  ) {
-                        embed.sendEmbed("Sorry, but you need **Owner** permission to use this command", event.getChannel());
+                        event.getChannel().sendMessage("lol no").queue();
                         return;
                     }
                     if (ArrayUtils.isEmpty(args) && cmd.needArgs()) {
                         String usage = "Correct Usage: `" + prefix + cmd.getName() + " " + cmd.getUsage() + "`";
-                        if (usage.equals(null)) {
+                        if (usage.isEmpty()) {
                             usage = "Not available";
                         }
                         MessageEmbed missingArguments = new EmbedBuilder()
-                                .setTitle(emotes.cross + " Missing Arguments ")
+                                .setTitle(CustomEmotes.cross + " Missing Arguments")
                                 .setDescription(usage)
                                 .setColor(Color.red)
                                 .build();

@@ -25,6 +25,7 @@ public class FidgetSpinnerWord {
             "**E**",
             "指尖陀螺",
             "指\uD83C\uDD71陀螺",
-            "spun you your spun your spun yourself"
+            "spun you your spun your spun yourself",
+            "AAA batteries"
     };
 }

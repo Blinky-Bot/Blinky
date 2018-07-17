@@ -53,6 +53,10 @@ public class addCommand extends Command {
                 Embed.sendEmbed("Tag already exists.", msg.getChannel());
                 return;
             }
+            if (content.isEmpty()) {
+                Embed.sendEmbed("Where is the content?", msg.getChannel());
+                return;
+            }
             MongoConnect.addTag(name, content, user.getId());
             Embed.sendEmbed("Successfully created tag", msg.getChannel());
         }
