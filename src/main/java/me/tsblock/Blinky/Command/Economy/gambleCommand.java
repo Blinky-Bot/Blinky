@@ -72,32 +72,29 @@ public class gambleCommand extends Command {
             Embed.sendEmbed(betAmount + " is not a number u dumbass", event.getChannel());
             return;
         }
-        if (found != null) {
-            if (found.getLong("balance") < betAmount) {
-                Embed.sendEmbed("You bet too much!", event.getChannel());
-                return;
-            }
-            if (p > 50) {
-                Bson update = new Document("balance", found.getLong("balance") + winamount);
-                Bson updateo = new Document("$set", update);
-                userdoc.updateOne(found, updateo);
-                MessageEmbed win = new EmbedBuilder()
-                        .setDescription("Huzaah! You just won $" + winamount + "\nYou now have: $" + found.getLong("balance"))
-                        .setColor(Color.GREEN)
-                        .build();
-                event.getChannel().sendMessage(win).queue();
-            } else {
-                Bson updatelose = new Document("balance", found.getLong("balance") - betAmount);
-                Bson updateloseo = new Document("$set", updatelose);
-                userdoc.updateOne(found, updateloseo);
-                MessageEmbed lose = new EmbedBuilder()
-                        .setDescription("Uh oh! You just lost $" + betAmount + "\nYou now have: $" + found.getLong("balance"))
-                        .setColor(Color.RED)
-                        .build();
-                event.getChannel().sendMessage(lose).queue();
-            }
+        if (found == null) MongoConnect.initUserStats(user.getId());
+        if (found.getLong("balance") < betAmount) {
+            Embed.sendEmbed("You bet too much!", event.getChannel());
+            return;
+        }
+        if (p > 50) {
+            Bson update = new Document("balance", found.getLong("balance") + winamount);
+            Bson updateo = new Document("$set", update);
+            userdoc.updateOne(found, updateo);
+            MessageEmbed win = new EmbedBuilder()
+                    .setDescription("Huzaah! You just won $" + winamount + "\nYou now have: $" + found.getLong("balance"))
+                    .setColor(Color.GREEN)
+                    .build();
+            event.getChannel().sendMessage(win).queue();
         } else {
-            Embed.sendEmbed("Please create a wallet via b.balance first", event.getChannel());
+            Bson updatelose = new Document("balance", found.getLong("balance") - betAmount);
+            Bson updateloseo = new Document("$set", updatelose);
+            userdoc.updateOne(found, updateloseo);
+            MessageEmbed lose = new EmbedBuilder()
+                    .setDescription("Uh oh! You just lost $" + betAmount + "\nYou now have: $" + found.getLong("balance"))
+                    .setColor(Color.RED)
+                    .build();
+            event.getChannel().sendMessage(lose).queue();
         }
     }
 }

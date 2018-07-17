@@ -60,7 +60,7 @@ public class hackdollarsCommand extends Command {
             Bson updatedvalue = new Document("balance", newValue);
             Bson updateoperation = new Document("$set", updatedvalue);
             userStatsCollection.updateOne(found, updateoperation);
-            embed.sendEmbed("***YOU JUST HACCED " + "$" + args[0] + "*** <:dab:396368624245407744>", event.getChannel());
+            event.getChannel().sendMessage("***YOU JUST HACCED " + "$" + args[0] + "*** \\<:dab:396368624245407744>").queue();
         } else {
             event.getChannel().sendMessage("you already know what just happened!!!1#!").queue();
         }

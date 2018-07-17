@@ -17,7 +17,6 @@ import java.util.Arrays;
 import java.util.List;
 
 public class balanceCommand extends Command {
-    public MongoConnect mongoConnect = new MongoConnect();
     @Override
     public String getName() {
         return "balance";
@@ -49,21 +48,20 @@ public class balanceCommand extends Command {
         if (!msg.getMentionedUsers().isEmpty()) {
             toCheckId = msg.getMentionedUsers().get(0).getId();
         }
-        Embed embed = new Embed();
-        MongoCollection<Document> userStatsCollection = mongoConnect.getUserStats();
+        MongoCollection<Document> userStatsCollection = MongoConnect.getUserStats();
         Document userStats = new Document("id", toCheckId);
         Document found = userStatsCollection.find(userStats).first();
         if (found == null) {
             if (guild.getMemberById(toCheckId).getUser().isBot()) {
-                embed.sendEmbed("Bots are not allowed to use economy.", event.getChannel());
+                Embed.sendEmbed("Bots are not allowed to use economy.", event.getChannel());
                 return;
             }
             if (!toCheckId.equals(user.getId())) {
-                    embed.sendEmbed("The targeted user did not create a wallet. Use b.balance to create a wallet.", event.getChannel());
+                    Embed.sendEmbed("The targeted user did not create a wallet. Use b.balance to create a wallet.", event.getChannel());
                 return;
             }
-            mongoConnect.initUserStats(toCheckId);
-            embed.sendEmbed("Successfully created your wallet, please type this command again to check your balance.", event.getChannel());
+            MongoConnect.initUserStats(toCheckId);
+            Embed.sendEmbed("Successfully created your wallet, please type this command again to check your balance.", event.getChannel());
         } else {
             MessageEmbed messageEmbed = new EmbedBuilder()
                     .setAuthor(guild.getMemberById(toCheckId).getUser().getName() + "\'s wallet", null, guild.getMemberById(toCheckId).getUser().getAvatarUrl())

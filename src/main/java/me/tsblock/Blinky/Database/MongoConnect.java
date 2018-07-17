@@ -51,7 +51,7 @@ public class MongoConnect {
 
     public static void initUserStats(String id) {
         Document document = new Document("id", id);
-        document.append("balance", "300");
+        document.append("balance", 300L);
         document.append("lastDaily", "");
         document.append("donor", false);
         UserStats.insertOne(document);
