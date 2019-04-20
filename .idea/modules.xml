@@ -2,9 +2,9 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/Blinky.iml" filepath="$PROJECT_DIR$/Blinky.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/Blinky_main.iml" filepath="$PROJECT_DIR$/.idea/modules/Blinky_main.iml" group="Blinky" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/Blinky_test.iml" filepath="$PROJECT_DIR$/.idea/modules/Blinky_test.iml" group="Blinky" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/Thonk.iml" filepath="$PROJECT_DIR$/.idea/modules/Thonk.iml" group="Thonk" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/Thonk_main.iml" filepath="$PROJECT_DIR$/.idea/modules/Thonk_main.iml" group="Thonk" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/Thonk_test.iml" filepath="$PROJECT_DIR$/.idea/modules/Thonk_test.iml" group="Thonk" />
     </modules>
   </component>
 </project>

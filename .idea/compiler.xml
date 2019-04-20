@@ -4,6 +4,8 @@
     <bytecodeTargetLevel>
       <module name="Blinky_main" target="1.8" />
       <module name="Blinky_test" target="1.8" />
+      <module name="Thonk_main" target="1.8" />
+      <module name="Thonk_test" target="1.8" />
     </bytecodeTargetLevel>
   </component>
 </project>
