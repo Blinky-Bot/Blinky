@@ -49,18 +49,6 @@ public class uptimeCommand extends Command {
                 .append(hours + " hours, ")
                 .append(minutes + " minutes, ")
                 .append(seconds + " seconds.");
-        for (int i=0;i<days;i++) {
-            stringBuilder.append("<:lol:429593322902913024>");
-        }
-        for (int i=0;i<((int)hours/10);i++) {
-            stringBuilder.append("\uD83D\uDE02");
-        }
-        for (int i=0;i<((int)minutes/10);i++) {
-            stringBuilder.append("\uD83D\uDE24");
-        }
-        for (int i=0;i<((int)seconds/10);i++) {
-            stringBuilder.append("\uD83D\uDE0F");
-        }
         msg.getChannel().sendMessage(stringBuilder.toString()).queue();
     }
 }

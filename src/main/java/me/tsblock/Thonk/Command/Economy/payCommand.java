@@ -64,7 +64,6 @@ public class payCommand extends Command {
         MongoCollection<Document> userStatsDoc = mongoConnect.getUserStats();
         Document foundToPayUser =  userStatsDoc.find(new Document("id", toPayUserID)).first();
         Document selfUserAmount = userStatsDoc.find(new Document("id", event.getAuthor().getId())).first();
-        System.out.println(toPayUserID + " " + event.getAuthor().getId());
         if (toPayUserID.equals(user.getId())) {
             embed.sendEmbed("Why would you trying to pay to yourself? Trying to duplicate money, huh?", event.getChannel());
             return;

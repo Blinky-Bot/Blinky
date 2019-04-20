@@ -139,14 +139,14 @@ public class settingsCommand extends Command {
                 EmbedBuilder _default = new EmbedBuilder()
                         .setAuthor("Settings of " + guild.getName(), null,"https://i.imgur.com/gJNLEXQ.png")
                         .setColor(Color.cyan)
-                        .setDescription("Use `b.settings <setting> none` to disable the setting")
-                        .addField("Prefix", "`b.settings prefix <prefix>`\n" + prefixDisplay, false)
-//                        .addField("Join/Leave Text Channel `b.settings welcomeChannel <channel>` " + getStatus(welcomeChannel), welcomeChannel, false)
-//                        .addField("Join Message `b.settings joinMessage <message>` " + getStatus(welcomeMessage), welcomeMessage, false)
-//                        .addField("Leave Message `b.settings leaveMessage <message>` " + getStatus(leaveMessage), leaveMessage, false)
-//                        .addField("Auto role on join `b.settings autoRole <role name>` " + getStatus(autoRole), autoRole, false)
-                        .addField("Starboard Channel `b.settings starboard <channel>` " + getStatus(starboard), starboard, false);
-                if (!starboard.equals("▶ **None**")) _default.addField("Starboard Roles", "\n`b.settings starboardRoles add <role>`\n`b.settings starboardRoles remove <role>`\n" + "▶ " + stringBuilder.toString(), false);
+                        .setDescription("Use `t.settings <setting> none` to disable the setting")
+                        .addField("Prefix", "`t.settings prefix <prefix>`\n" + prefixDisplay, false)
+//                        .addField("Join/Leave Text Channel `t.settings welcomeChannel <channel>` " + getStatus(welcomeChannel), welcomeChannel, false)
+//                        .addField("Join Message `t.settings joinMessage <message>` " + getStatus(welcomeMessage), welcomeMessage, false)
+//                        .addField("Leave Message `t.settings leaveMessage <message>` " + getStatus(leaveMessage), leaveMessage, false)
+//                        .addField("Auto role on join `t.settings autoRole <role name>` " + getStatus(autoRole), autoRole, false)
+                        .addField("Starboard Channel `t.settings starboard <channel>` " + getStatus(starboard), starboard, false);
+                if (!starboard.equals("▶ **None**")) _default.addField("Starboard Roles", "\n`t.settings starboardRoles add <role>`\n`t.settings starboardRoles remove <role>`\n" + "▶ " + stringBuilder.toString(), false);
                 event.getChannel().sendMessage(_default.build()).queue();
         }
     }

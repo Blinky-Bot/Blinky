@@ -51,6 +51,11 @@ public class evalCommand extends Command {
     }
 
     @Override
+    public String getUsage() {
+        return "<code>";
+    }
+
+    @Override
     public void onExecute(GuildMessageReceivedEvent event, Message msg, User user, Guild guild, String... args) {
         ScriptEngineManager manager = new ScriptEngineManager();
         ScriptEngine engine = manager.getEngineByName("js");

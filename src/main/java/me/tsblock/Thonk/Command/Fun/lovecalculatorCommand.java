@@ -68,7 +68,7 @@ public class lovecalculatorCommand extends Command {
                 .append("⏫   `" + second + "`\n")
                 .append("\n**" + rate + "%** ");
         for (int i=0;i<rateDivied;i++) {
-            stringBuilder.append("[█](https//google.com)");
+            stringBuilder.append("[█](https://google.com)");
         }
         for (int i=0;i<10-rateDivied;i++) {
             stringBuilder.append("█");
