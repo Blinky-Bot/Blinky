@@ -1,9 +1,9 @@
 package me.tsblock.Thonk.utils;
 
 public class CustomEmotes {
-    public static final String cross = "<:redTick:438696459894784000>";
-    public static final String tick = "<:tick:438696411161427998>";
-    public static final String spinner = "<:spinner:463256135378534400>";
-    public static final String on = "<:_on:466234520216272899>";
-    public static final String off = "<:off:466234531276652554>";
+    public static final String cross = "<:cross:569033942808789003>";
+    public static final String tick = "<:tick:569033942762651658>";
+    public static final String spinner = "<:spinner:569033942850863114>";
+    public static final String on = "<:_on:569033942737616896>";
+    public static final String off = "<:off:569033942829760513>";
 }

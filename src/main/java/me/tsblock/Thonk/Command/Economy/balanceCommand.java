@@ -52,23 +52,19 @@ public class balanceCommand extends Command {
         Document userStats = new Document("id", toCheckId);
         Document found = userStatsCollection.find(userStats).first();
         if (found == null) {
-            if (guild.getMemberById(toCheckId).getUser().isBot()) {
-                Embed.sendEmbed("Bots are not allowed to use economy.", event.getChannel());
-                return;
-            }
-            if (!toCheckId.equals(user.getId())) {
-                    Embed.sendEmbed("The targeted user did not create a wallet. Use b.balance to create a wallet.", event.getChannel());
-                return;
-            }
             MongoConnect.initUserStats(toCheckId);
-            Embed.sendEmbed("Successfully created your wallet, please type this command again to check your balance.", event.getChannel());
+            found = userStatsCollection.find(userStats).first();
+            sendBalanceEmbed(event, guild, toCheckId, found);
         } else {
-            MessageEmbed messageEmbed = new EmbedBuilder()
-                    .setAuthor(guild.getMemberById(toCheckId).getUser().getName() + "\'s wallet", null, guild.getMemberById(toCheckId).getUser().getAvatarUrl())
-                    .addField("\uD83D\uDCB0 Balance \uD83D\uDCB0", "$" + String.format("%,d", found.getLong("balance")), false) //ez format ez trick
-                    .setColor(Color.GREEN)
-                    .build();
-            event.getChannel().sendMessage(messageEmbed).queue();
+            sendBalanceEmbed(event, guild, toCheckId, found);
         }
+    }
+    private void sendBalanceEmbed(GuildMessageReceivedEvent event, Guild guild, String toCheckId, Document found) {
+        MessageEmbed messageEmbed = new EmbedBuilder()
+                .setAuthor(guild.getMemberById(toCheckId).getUser().getName() + "\'s wallet", null, guild.getMemberById(toCheckId).getUser().getAvatarUrl())
+                .addField("\uD83D\uDCB0 Balance \uD83D\uDCB0", "$" + String.format("%,d", found.getLong("balance")), false) //ez format ez trick
+                .setColor(Color.GREEN)
+                .build();
+        event.getChannel().sendMessage(messageEmbed).queue();
     }
 }
