@@ -25,7 +25,7 @@ public class forceCreateWalletCommand extends Command {
 
     @Override
     public String getDescription() {
-        return "Forcing the bot create a wallet for a user without user do b.balance";
+        return "Forcing the bot create a wallet for a user without user do t.balance (this is only for debug purpose)";
     }
 
     @Override
